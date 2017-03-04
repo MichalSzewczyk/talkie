@@ -1,77 +1,55 @@
 package com.project.graphql.test;
 
-import graphql.schema.DataFetcher;
-import graphql.schema.DataFetchingEnvironment;
+import graphql.GraphQL;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import static graphql.Scalars.GraphQLInt;
 import static graphql.Scalars.GraphQLString;
-import static graphql.schema.GraphQLArgument.newArgument;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLSchema.newSchema;
 
-@Service
+@Configuration
 public class GraphQLService {
+    private final Logger logger = LoggerFactory.getLogger(GraphQLService.class);
+
     @Autowired
     private Person person;
 
-    public GraphQLObjectType personGraphQLObject = GraphQLObjectType.newObject()
-            .name("person")
-            .field(newFieldDefinition()
-                    .name("id")
-                    .type(GraphQLInt)
-                    .staticValue(0).build())
-            .field(newFieldDefinition()
-                    .name("name")
-                    .type(GraphQLString)
-                    .staticValue("Foo")
-                    .build())
-            .field(newFieldDefinition()
-                    .name("surname")
-                    .type(GraphQLString)
-                    .staticValue("Bar")
-                    .build())
+    private GraphQLObjectType buildPersonGraphQLObject() {
+        return GraphQLObjectType.newObject()
+                .name("person")
+                .field(newFieldDefinition()
+                        .name("id")
+                        .type(GraphQLInt)
+                        .staticValue(person.getId()).build())
+                .field(newFieldDefinition()
+                        .name("name")
+                        .type(GraphQLString)
+                        .staticValue(person.getName())
+                        .build())
+                .field(newFieldDefinition()
+                        .name("surname")
+                        .type(GraphQLString)
+                        .staticValue(person.getSurname())
+                        .build())
+                .build();
+    }
+
+    private GraphQLSchema buildPersonGraphQLSchema() {
+        return newSchema()
+                .query(buildPersonGraphQLObject())
             .build();
+    }
 
-    public GraphQLObjectType personQuery = GraphQLObjectType.newObject()
-            .name("personQuery")
-            .field(newFieldDefinition()
-                    .name("id")
-                    .type(personGraphQLObject).build())
-            .build();
-
-    public GraphQLObjectType personEditor = GraphQLObjectType.newObject()
-            .name("personEditor")
-            .field(newFieldDefinition()
-                    .name("changeId")
-                    .type(personGraphQLObject)
-                    .argument(newArgument()
-                            .name("newNumber")
-                            .type(GraphQLInt).build())
-                    .dataFetcher(new DataFetcher() {
-                        @Override
-                        public Object get(DataFetchingEnvironment environment) {
-                            Integer newId = environment.getArgument("newId");
-                            person.setId(newId);
-                            return person;
-                        }
-                    }).build())
-            .field(newFieldDefinition()
-                    .name("failToChangeTheNumber")
-                    .type(personGraphQLObject)
-                    .argument(newArgument()
-                            .name("newNumber")
-                            .type(GraphQLInt).build())
-                    .dataFetcher((r) -> person.getName()).build()).build();
-
-    public GraphQLSchema schema = newSchema()
-            .query(personQuery)
-            .mutation(personEditor)
-            .build();
-
-
-
+    @Bean("test")
+    public GraphQL getGraphQL() {
+        logger.info("Creating GraphQL bean.");
+        return new GraphQLWrapper(buildPersonGraphQLSchema());
+    }
 }
