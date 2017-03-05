@@ -27,7 +27,8 @@ public class GraphQLService {
                 .field(newFieldDefinition()
                         .name("id")
                         .type(GraphQLInt)
-                        .staticValue(person.getId()).build())
+                        .staticValue(person.getId())
+                        .build())
                 .field(newFieldDefinition()
                         .name("name")
                         .type(GraphQLString)
@@ -44,7 +45,7 @@ public class GraphQLService {
     private GraphQLSchema buildPersonGraphQLSchema() {
         return newSchema()
                 .query(buildPersonGraphQLObject())
-            .build();
+                .build();
     }
 
     @Bean("test")
