@@ -16,10 +16,15 @@ public class GraphQLTestController {
     private GraphQL graphQL;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:8081")
     @ResponseBody
-    public String graphTest(@RequestBody String id) {
+    public Object graphTest(@RequestBody String id) {
         logger.info("Request with parameter: " + id);
-        return (String) graphQL.execute(id).getData();
+        ExecutionResult result = graphQL.execute(id);
+        if (result.getErrors().size() > 0) {
+            System.out.println("ERROR:\n" + result.getErrors());
+        }
+        return result.getData();
     }
 
     @Secured("ROLE_ADMIN")

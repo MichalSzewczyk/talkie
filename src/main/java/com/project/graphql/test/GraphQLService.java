@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLArgument.newArgument;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
@@ -55,15 +57,19 @@ public class GraphQLService {
                 .build();
 
 
-
         GraphQLObjectType queryType = newObject()
                 .name("QueryType")
                 .field(newFieldDefinition()
                         .name("login")
                         .type(personType)
-                        .argument(newArgument()
-                                .name("login")
-                                .type(GraphQLString).build())
+                        .argument(Arrays.asList(newArgument()
+                                        .name("login")
+                                        .type(GraphQLString)
+                                        .build(),
+                                newArgument()
+                                        .name("password")
+                                        .type(GraphQLString)
+                                        .build()))
                         .dataFetcher(new StaticDataFetcher(login)).build())
                 .build();
 
