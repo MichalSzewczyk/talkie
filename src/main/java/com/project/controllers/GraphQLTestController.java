@@ -12,37 +12,29 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class GraphQLTestController {
     private final Logger logger = LoggerFactory.getLogger(GraphQLTestController.class);
+    private static final String REQUEST_INFO = "Request with parameter: %s";
+    private static final String GRAPH_QL_ERROR = "Error: %s, while executing graphQl query for request body: %s";
+
     @Autowired
     private GraphQL graphQL;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:8081")
+    @CrossOrigin(origins = "${crossOrigin.port}")
     @ResponseBody
-    public Object graphTest(@RequestBody String id) {
-        logger.info("Request with parameter: " + id);
-        ExecutionResult result = graphQL.execute(id);
+    public Object graphTest(@RequestBody String requestBody) {
+        logger.info(REQUEST_INFO, requestBody);
+        ExecutionResult result = graphQL.execute(requestBody);
         if (result.getErrors().size() > 0) {
-            System.out.println("ERROR:\n" + result.getErrors());
+            logger.error(String.format(GRAPH_QL_ERROR, result.getErrors(), requestBody));
         }
         return result.getData();
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/foo")
+    @RequestMapping(value = "/sample")
     public String foo(@RequestBody String id) {
         logger.info("Request with parameter: " + id);
         return (String) graphQL.execute(id).getData();
     }
 
-    @RequestMapping("/slaby")
-    public String graphTest123(@RequestBody String query) {
-        logger.info(query);
-        ExecutionResult result = graphQL.execute(query);
-        if (result.getErrors().size() > 0) {
-            System.out.println("QUERY ERROR!: \n" + result.getErrors());
-        }
-        System.out.println("RESULT \n" + result.getData());
-
-        return "TEST";
-    }
 }
