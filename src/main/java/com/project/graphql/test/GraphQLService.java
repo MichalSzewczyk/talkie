@@ -1,55 +1,75 @@
 package com.project.graphql.test;
 
 import graphql.GraphQL;
-import graphql.schema.GraphQLObjectType;
-import graphql.schema.GraphQLSchema;
+import graphql.schema.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static graphql.Scalars.GraphQLInt;
 import static graphql.Scalars.GraphQLString;
+import static graphql.schema.GraphQLArgument.newArgument;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
-import static graphql.schema.GraphQLSchema.newSchema;
+import static graphql.schema.GraphQLObjectType.newObject;
 
 @Configuration
 public class GraphQLService {
     private final Logger logger = LoggerFactory.getLogger(GraphQLService.class);
 
     @Autowired
-    private Person person;
+    private Login login;
 
-    private GraphQLObjectType buildPersonGraphQLObject() {
+    private GraphQLObjectType buildLoginGraphQLObject() {
         return GraphQLObjectType.newObject()
                 .name("person")
                 .field(newFieldDefinition()
-                        .name("id")
-                        .type(GraphQLInt)
-                        .staticValue(person.getId()).build())
-                .field(newFieldDefinition()
-                        .name("name")
+                        .name("login")
                         .type(GraphQLString)
-                        .staticValue(person.getName())
+                        .staticValue(login.getLogin())
                         .build())
                 .field(newFieldDefinition()
-                        .name("surname")
+                        .name("password")
                         .type(GraphQLString)
-                        .staticValue(person.getSurname())
+                        .staticValue(login.getPassword())
                         .build())
                 .build();
     }
 
-    private GraphQLSchema buildPersonGraphQLSchema() {
-        return newSchema()
-                .query(buildPersonGraphQLObject())
-            .build();
-    }
-
-    @Bean("test")
+    @Bean
     public GraphQL getGraphQL() {
         logger.info("Creating GraphQL bean.");
-        return new GraphQLWrapper(buildPersonGraphQLSchema());
+        //TODO: Sub selection required for type Login
+
+        GraphQLObjectType personType = newObject()
+                .name("Login")
+                .description("personal data for logging")
+                .field(newFieldDefinition()
+                        .name("login")
+                        .description("Login of the user.")
+                        .type(GraphQLString).build())
+                .field(newFieldDefinition()
+                        .name("password")
+                        .description("Password of the user.")
+                        .type(GraphQLString).build())
+                .build();
+
+
+
+        GraphQLObjectType queryType = newObject()
+                .name("QueryType")
+                .field(newFieldDefinition()
+                        .name("login")
+                        .type(personType)
+                        .argument(newArgument()
+                                .name("login")
+                                .type(GraphQLString).build())
+                        .dataFetcher(new StaticDataFetcher(login)).build())
+                .build();
+
+        GraphQLSchema loginSchema = GraphQLSchema.newSchema()
+                .query(queryType)
+                .build();
+        return new GraphQL(loginSchema);
     }
 }
