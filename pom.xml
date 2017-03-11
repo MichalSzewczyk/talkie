@@ -67,7 +67,23 @@
 		</dependency>
 
 	</dependencies>
-
+	<profiles>
+		<profile>
+            <id>development</id>
+            <properties>
+                <springActiveProfile>dev</springActiveProfile>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <springProfile>prod</springProfile>
+            </properties>
+        </profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
