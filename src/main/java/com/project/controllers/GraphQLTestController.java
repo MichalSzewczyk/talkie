@@ -22,7 +22,7 @@ public class GraphQLTestController {
     @CrossOrigin(origins = "${crossOrigin.port}")
     @ResponseBody
     public Object graphTest(@RequestBody String requestBody) {
-        logger.info(REQUEST_INFO, requestBody);
+        logger.info(String.format(REQUEST_INFO, requestBody));
         ExecutionResult result = graphQL.execute(requestBody);
         if (result.getErrors().size() > 0) {
             logger.error(String.format(GRAPH_QL_ERROR, result.getErrors(), requestBody));
