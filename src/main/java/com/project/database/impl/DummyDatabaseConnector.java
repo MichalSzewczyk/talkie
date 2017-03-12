@@ -8,7 +8,7 @@ import java.util.Optional;
 
 //TODO: implement database connection logic
 @Repository
-public final class DummyDatabaseConnector implements DatabaseConnector {
+public class DummyDatabaseConnector implements DatabaseConnector {
     @Override
     public Optional<User> getUser(String login) {
         //database logic
