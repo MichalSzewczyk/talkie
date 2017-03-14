@@ -1,16 +1,12 @@
 package com.project;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@EnableAutoConfiguration
-@Configuration
-@ComponentScan("com.project")
+@SpringBootApplication
 public class TalkieApplication {
-
 	public static void main(String[] args) {
-		SpringApplication.run(TalkieApplication.class, args);
-	}
+
+        SpringApplication.run(TalkieApplication.class, args);
+    }
 }
