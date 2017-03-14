@@ -1,6 +1,13 @@
 package com.project.database.interfaces;
 
-public interface SuccessFlaggedObject {
-    boolean getSuccess();
-    void setSuccess(boolean success);
+public abstract class SuccessFlaggedObject {
+    transient private Boolean success = true;
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
 }
