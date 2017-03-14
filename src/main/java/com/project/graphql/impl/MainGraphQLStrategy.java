@@ -1,10 +1,9 @@
 package com.project.graphql.impl;
 
 
-import com.project.database.impl.DatabaseAccessFacade;
 import com.project.database.interfaces.AccessService;
+import com.project.database.model.User;
 import com.project.graphql.interfaces.GraphQLStrategy;
-import com.project.model.User;
 import com.project.utils.GraphQLUtils;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
