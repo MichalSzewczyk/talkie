@@ -1,5 +1,6 @@
-package com.project;
+package com.project.configuration;
 
+import com.project.TalkieApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
