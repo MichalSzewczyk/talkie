@@ -17,8 +17,8 @@ public class User extends SuccessFlaggedObject implements Serializable {
     private String login;
     @Column(name = "name")
     private String name;
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "lastName")
+    private String lastName;
     @Column(name = "password")
     private String password;
 
@@ -46,12 +46,12 @@ public class User extends SuccessFlaggedObject implements Serializable {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getlastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
