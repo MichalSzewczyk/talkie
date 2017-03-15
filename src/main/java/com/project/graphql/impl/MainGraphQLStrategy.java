@@ -90,6 +90,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .field(graphQLUtils.getFieldDefinition("id", "Unique id of user", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("name", "Name of user friend", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("lastName", "Last name of user friend", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("lastName", "Last name of user friend", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("description", "User defined sentence", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("avatar", "User Avatar Link", GraphQLString))
                 .build();

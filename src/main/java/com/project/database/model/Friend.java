@@ -11,31 +11,19 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
-public class User extends SuccessFlaggedObject implements Serializable {
+public class Friend extends SuccessFlaggedObject implements Serializable {
+
     @Id
-    @Column(name = "login")
-    private String login;
     @Column(name = "name")
     private String name;
     @Column(name = "lastName")
     private String lastName;
-    @Column(name = "password")
-    private String password;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "description")
+    private String description;
 
-    public User(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
-
-    public User() {
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public Friend() {
     }
 
     public String getName() {
@@ -54,11 +42,20 @@ public class User extends SuccessFlaggedObject implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }
