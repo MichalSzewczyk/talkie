@@ -16,17 +16,17 @@ public final class DatabaseAccessFacade implements AccessService {
     }
 
     public User registerUser(User user) {
-        if (userRepository.findOne(user.getLogin()) != null)
-            user.setSuccess(false);
-        else {
-            userRepository.save(user);
-        }
+//        if (userRepository.findOne(user.getLogin()) != null)
+//            user.setSuccess(false);
+//        else {
+//            userRepository.save(user);
+//        }
         return user;
     }
 
     public User loginUser(User user) {
-        if (!userRepository.exists(user.getLogin()))
-            user.setSuccess(false);
+//        if (!userRepository.exists(user.getLogin()))
+//            user.setSuccess(false);
         return user;
     }
 
