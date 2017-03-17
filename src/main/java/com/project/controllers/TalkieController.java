@@ -1,5 +1,7 @@
 package com.project.controllers;
 
+import com.project.database.model.User;
+import com.project.database.repositories.UserRepository;
 import com.project.interfaces.WebExecutionResult;
 import com.project.interfaces.WebService;
 import org.slf4j.Logger;
@@ -18,6 +20,8 @@ public class TalkieController {
     private static final String GRAPH_QL_ERROR = "Error: %s, while executing graphQl query for request body: %s";
     private static final String GRAPH_QL_RESULT = "Result of request: %s";
     private final WebService webService;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     public TalkieController(WebService webService) {
@@ -37,6 +41,10 @@ public class TalkieController {
         if (!result.getErrors().isEmpty()) {
             logger.error(String.format(GRAPH_QL_ERROR, result.getErrors(), requestBody));
         }
+
+        User u = userRepository.findOne(0);
+        System.out.println("Foo: " + u.getFriendRelations());
+
         return result.getData();
     }
 
