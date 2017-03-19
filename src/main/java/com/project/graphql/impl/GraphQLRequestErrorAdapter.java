@@ -14,4 +14,9 @@ public class GraphQLRequestErrorAdapter implements RequestError {
     public String getMessage() {
         return graphQLError.getMessage();
     }
+
+    @Override
+    public String toString() {
+        return graphQLError.getMessage();
+    }
 }
