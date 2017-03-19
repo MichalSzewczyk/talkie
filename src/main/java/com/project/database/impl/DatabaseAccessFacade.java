@@ -33,7 +33,7 @@ public final class DatabaseAccessFacade implements AccessService {
         User user = userRepository.findOneByLogin(login);
         if (user == null) {
             user = new User(String.valueOf(false), DatabaseOperationMessage.USER_NOT_FOUND.toString());
-        } else if (password.equals(user.getPassword())) {
+        } else if (!password.equals(user.getPassword())) {
             user = new User(String.valueOf(false), DatabaseOperationMessage.INCORRECT_PASSWORD.toString());
         } else {
             user.setOnline(true);

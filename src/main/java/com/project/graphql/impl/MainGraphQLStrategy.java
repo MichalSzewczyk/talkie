@@ -69,19 +69,24 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .type(personType)
                 .argument(userArguments)
                 .dataFetcher(fetchingEnvironment -> databaseAccessFacade
-                        .loginUser(fetchingEnvironment.getArgument("login"), fetchingEnvironment.getArgument("password"))).build();
+                        .loginUser(
+                                fetchingEnvironment.getArgument("login"),
+                                fetchingEnvironment.getArgument("password")
+                        )).build();
     }
 
     private GraphQLObjectType getFriendType() {
         return newObject()
                 .name("Friend")
                 .description("Personal data of friend")
+                .field(graphQLUtils.getFieldDefinition("id", "Unique user ID", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("name", "Name of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("lastName", "Last name of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("avatar", "Link to avatar.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("description", "Description of friend.", GraphQLString))
                 .build();
     }
+
     private GraphQLObjectType getUserType() {
         return newObject()
                 .name("User")
@@ -91,7 +96,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .field(graphQLUtils.getFieldDefinition("lastName", "Last name of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("password", "Password of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("avatar", "Avatar of the user.", GraphQLString))
-                .field(graphQLUtils.getFieldDefinition("success", "True if operation succeed.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("error", "True if operation succeed.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("message", "Information about error.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("online", "Online status of the user.", GraphQLBoolean))
                 .field(graphQLUtils.getFieldDefinition("friends", "List of user's friends", new GraphQLList(getFriendType())))
