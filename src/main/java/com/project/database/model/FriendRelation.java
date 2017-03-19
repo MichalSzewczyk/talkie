@@ -1,7 +1,6 @@
 package com.project.database.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name="friends")
@@ -14,9 +13,6 @@ public class FriendRelation {
     private Integer who;
     @Column(name = "with")
     private Integer with;
-    @OneToMany
-    @JoinColumn(name="with", referencedColumnName = "id")
-    private List<User> users;
 
     public Integer getId() {
         return id;
@@ -40,13 +36,5 @@ public class FriendRelation {
 
     public void setWith(Integer with) {
         this.with = with;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 }
