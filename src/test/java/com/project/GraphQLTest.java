@@ -20,7 +20,7 @@ public class GraphQLTest {
     private static final String QUERY =
             "            query{" +
                     "              %s(login:\"%s\", password:\"%s\"){" +
-                    "                success" +
+                    "                error" +
                     "              }" +
                     "            }";
     private static final String LOGIN = "user1";
