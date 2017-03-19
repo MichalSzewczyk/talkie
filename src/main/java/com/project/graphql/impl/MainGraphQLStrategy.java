@@ -2,11 +2,11 @@ package com.project.graphql.impl;
 
 
 import com.project.database.interfaces.AccessService;
-import com.project.database.model.User;
 import com.project.graphql.interfaces.GraphQLStrategy;
 import com.project.utils.GraphQLUtils;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLList;
 import graphql.schema.GraphQLObjectType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
+import static graphql.Scalars.GraphQLBoolean;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
@@ -25,11 +26,12 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
     private final List<GraphQLArgument> userArguments;
     private final GraphQLObjectType personType;
 
+
     @Autowired
     public MainGraphQLStrategy(GraphQLUtils graphQLUtils, AccessService databaseAccessFacade) {
         this.graphQLUtils = graphQLUtils;
         this.databaseAccessFacade = databaseAccessFacade;
-        this.userArguments = graphQLUtils.getArgumentList(GraphQLString, "login", "password", "success");
+        this.userArguments = graphQLUtils.getArgumentList(GraphQLString, "login", "name", "lastName", "password", "avatar", "friends", "success", "message");
         this.personType = getUserType();
 
     }
@@ -50,7 +52,14 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .type(personType)
                 .argument(userArguments)
                 .dataFetcher(fetchingEnvironment -> databaseAccessFacade
-                        .registerUser(new User(fetchingEnvironment.getArgument("login"), fetchingEnvironment.getArgument("password")))).build();
+                        .registerUser(
+                                fetchingEnvironment.getArgument("login"),
+                                fetchingEnvironment.getArgument("name"),
+                                fetchingEnvironment.getArgument("lastName"),
+                                fetchingEnvironment.getArgument("password"),
+                                fetchingEnvironment.getArgument("avatar"),
+                                true
+                        )).build();
 
     }
 
@@ -60,17 +69,32 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .type(personType)
                 .argument(userArguments)
                 .dataFetcher(fetchingEnvironment -> databaseAccessFacade
-                        .loginUser(new User(fetchingEnvironment.getArgument("login"), fetchingEnvironment.getArgument("password")))).build();
+                        .loginUser(fetchingEnvironment.getArgument("login"), fetchingEnvironment.getArgument("password"))).build();
     }
 
-
+    private GraphQLObjectType getFriendType() {
+        return newObject()
+                .name("Friend")
+                .description("Personal data of friend")
+                .field(graphQLUtils.getFieldDefinition("name", "Name of the user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("lastName", "Last name of the user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("avatar", "Link to avatar.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("description", "Description of friend.", GraphQLString))
+                .build();
+    }
     private GraphQLObjectType getUserType() {
         return newObject()
-                .name("UserQuery")
+                .name("User")
                 .description("personal data for logging")
                 .field(graphQLUtils.getFieldDefinition("login", "Login of the user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("name", "Name of the user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("lastName", "Last name of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("password", "Password of the user.", GraphQLString))
-                .field(graphQLUtils.getFieldDefinition("success", "True if user is in database.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("avatar", "Avatar of the user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("success", "True if operation succeed.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("message", "Information about error.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("online", "Online status of the user.", GraphQLBoolean))
+                .field(graphQLUtils.getFieldDefinition("friends", "List of user's friends", new GraphQLList(getFriendType())))
                 .build();
     }
 }
