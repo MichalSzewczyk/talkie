@@ -34,7 +34,7 @@ public class GraphQLTest {
         UserRepository userRepository = mock(UserRepository.class);
         tmpUser = new User(LOGIN, PASSWORD);
 
-//        when(userRepository.findOne(LOGIN)).thenReturn(tmpUser);
+        when(userRepository.findOneByLogin(LOGIN)).thenReturn(tmpUser);
         when(userRepository.save(tmpUser)).thenReturn(tmpUser);
 
         this.graphQLService = new GraphQLFactory(new MainGraphQLStrategy(new GraphQLUtils(), new DatabaseAccessFacade(userRepository))).getGraphQL();
@@ -47,6 +47,6 @@ public class GraphQLTest {
 
     @Test
     public void testIfLoginQueryIsExecutedProperly() {
-        Assert.assertEquals("false", ((Map) ((Map) graphQLService.execute(String.format(QUERY, "login", LOGIN, PASSWORD)).getData()).get("login")).get("success"));
+        Assert.assertEquals("true", ((Map) ((Map) graphQLService.execute(String.format(QUERY, "login", LOGIN, PASSWORD)).getData()).get("login")).get("success"));
     }
 }
