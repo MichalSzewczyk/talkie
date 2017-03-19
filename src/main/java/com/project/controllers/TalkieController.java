@@ -1,6 +1,5 @@
 package com.project.controllers;
 
-import com.project.database.model.User;
 import com.project.database.repositories.UserRepository;
 import com.project.interfaces.WebExecutionResult;
 import com.project.interfaces.WebService;
@@ -41,10 +40,6 @@ public class TalkieController {
         if (!result.getErrors().isEmpty()) {
             logger.error(String.format(GRAPH_QL_ERROR, result.getErrors(), requestBody));
         }
-
-        User u = userRepository.findOne(0);
-        System.out.println("Foo: " + u.getFriendRelations());
-
         return result.getData();
     }
 
