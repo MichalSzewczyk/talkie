@@ -1,8 +1,6 @@
 package com.project.utils;
 
-import graphql.schema.GraphQLArgument;
-import graphql.schema.GraphQLFieldDefinition;
-import graphql.schema.GraphQLScalarType;
+import graphql.schema.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,7 +12,7 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
 @Component
 public final class GraphQLUtils {
-    public GraphQLFieldDefinition getFieldDefinition(String name, String description, GraphQLScalarType scalarType) {
+    public GraphQLFieldDefinition getFieldDefinition(String name, String description, GraphQLOutputType scalarType) {
         return newFieldDefinition()
                 .name(name)
                 .description(description)
