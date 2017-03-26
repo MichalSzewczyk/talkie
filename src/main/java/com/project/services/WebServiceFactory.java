@@ -1,6 +1,8 @@
 package com.project.services;
 
 import com.project.interfaces.WebService;
+import com.project.services.graphql.GraphQLService;
+import com.project.services.sockets.WebServiceOther;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
