@@ -1,4 +1,4 @@
-package com.project.services;
+package com.project.services.graphql;
 
 import com.project.graphql.impl.GraphQLResultAdapter;
 import com.project.interfaces.WebExecutionResult;
