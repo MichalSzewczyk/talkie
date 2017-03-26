@@ -16,7 +16,7 @@ import java.util.Map;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GraphQLTest {
+public class GraphQLTests {
     private static final String QUERY =
             "            query{" +
                     "              %s(login:\"%s\", password:\"%s\"){" +
