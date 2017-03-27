@@ -1,19 +1,19 @@
 package com.project.utils;
 
-public final class Tuple <T, S>{
-    private final T t;
-    private final S s;
+public final class Tuple <Key, Value>{
+    private final Key key;
+    private final Value value;
 
-    public Tuple(T t, S s) {
-        this.t = t;
-        this.s = s;
+    public Tuple(Key key, Value value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public T getT() {
-        return t;
+    public Key getKey() {
+        return key;
     }
 
-    public S getS() {
-        return s;
+    public Value getValue() {
+        return value;
     }
 }
