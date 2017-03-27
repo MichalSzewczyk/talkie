@@ -21,15 +21,15 @@ public class JsonParsingService implements ParsingService {
     private CustomMatcher customMatcher;
 
 
-    private Class<? extends SocketMessage> detectClass(String input){
+    private MessageType detectClass(String input){
         String type = customMatcher.getValue(input);
-        return MessageType.valueOf(type).getSocketMessageClass();
+        return MessageType.valueOf(type);
 
     }
 
     @Override
-    public Tuple<Object, Class<? extends SocketMessage>> parseSocketMessage(String json) throws IOException {
-        Class<? extends SocketMessage> detectedClass = detectClass(json);
-        return new Tuple<>(objectMapper.readValue(json, detectedClass), detectedClass);
+    public Tuple<Object, MessageType> parseSocketMessage(String json) throws IOException {
+        MessageType detectedClass = detectClass(json);
+        return new Tuple<>(objectMapper.readValue(json, detectedClass.getSocketMessageClass()), detectedClass);
     }
 }
