@@ -15,6 +15,9 @@ public class FetchUserStatus implements SocketMessage {
 
     @JsonProperty("type")
     private String type;
+
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("payload")
     private FetchUserStatusPayload payload;
     @JsonIgnore
@@ -40,4 +43,13 @@ public class FetchUserStatus implements SocketMessage {
         this.payload = payload;
     }
 
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
+    }
 }
