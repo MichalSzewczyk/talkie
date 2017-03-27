@@ -4,7 +4,7 @@ import com.project.sockets.model.messages.*;
 import com.project.sockets.model.messages.SocketMessage;
 
 public enum MessageType {
-    SAVE_MESSAGE(SendMessage.class),
+    SEND_MESSAGE(SendMessage.class),
     RECEIVE_MESSAGE(ReceiveMessage.class),
     PING(Ping.class),
     CLOSE_STREAM(CloseStream.class),
