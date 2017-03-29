@@ -1,16 +1,17 @@
-package com.project.sockets.model.messages;
+package com.project.sockets.model.messages.requests;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.project.sockets.model.messages.payloads.SendMessagePayload;
+import com.project.sockets.model.payloads.SendMessagePayload;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"type","payload"})
-public class SendMessage implements SocketMessage{
+public class SendMessage implements SocketRequestMessage {
 
     @JsonProperty("type")
     private String type;
+
     @JsonProperty("payload")
     private SendMessagePayload payload;
 
