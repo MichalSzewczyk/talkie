@@ -1,4 +1,4 @@
-package com.project.sockets.model.messages.payloads;
+package com.project.sockets.model.payloads;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,5 +22,4 @@ public class FetchUserStatusPayload {
     public void setListOfUsers(List<String> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
-
 }
