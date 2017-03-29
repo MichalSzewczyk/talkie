@@ -1,17 +1,17 @@
-package com.project.sockets.model.messages;
+package com.project.sockets.model.messages.requests;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.project.sockets.model.messages.payloads.FetchUserStatusPayload;
+import com.project.sockets.model.payloads.FetchUserStatusPayload;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"type", "payload"})
-public class FetchUserStatus implements SocketMessage {
+public class FetchUserStatus implements SocketRequestMessage {
 
     @JsonProperty("type")
     private String type;
