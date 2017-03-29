@@ -1,7 +1,7 @@
 package com.project.sockets.model;
 
-import com.project.sockets.model.messages.*;
 import com.project.sockets.model.messages.SocketMessage;
+import com.project.sockets.model.messages.requests.*;
 
 public enum MessageType {
     SEND_MESSAGE(SendMessage.class),
