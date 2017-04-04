@@ -29,6 +29,9 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
 
     private static final String RECEIVER_NOT_FOUND = "Message receiver: %s not found. Required session is not available or user is not logged in.";
     private static final String NOT_SUPPORTED_MESSAGE = "Not supported message type: %s";
+    private static final String ESTABLISHED_CONNECTION = "Established connection with user: %s";
+    private static final String MESSAGE_SENT = "Message: %s sent to user with id: %s";
+    private static final String HANDLING_MESSAGE = "Handling socket message: %s";
 
     private ParsingService parsingService;
 
@@ -43,7 +46,9 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         establishedSessions.add(session);
+        logger.info(String.format(ESTABLISHED_CONNECTION, session.getUri()));
     }
+
 
     private void sendMessage(Long receiverId, String message) throws IOException {
         WebSocketSession socketSession = loggedInUsers.get(receiverId);
@@ -54,6 +59,7 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         }
 
         socketSession.sendMessage(new TextMessage(message));
+        logger.info(String.format(MESSAGE_SENT, message, receiverId));
     }
 
     private void handleFetchUserStatus(FetchUserStatus fetchUserStatus) {
@@ -82,6 +88,7 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         super.handleTextMessage(session, message);
         String plainTextMessage = message.getPayload();
         Tuple<Object, MessageType> result = parsingService.parseSocketMessage(plainTextMessage);
+        logger.info(HANDLING_MESSAGE, message);
 
         switch (result.getValue()) {
             case FETCH_USER_STATUS:
