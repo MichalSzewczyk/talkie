@@ -13,11 +13,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
     AbstractWebSocketHandler socketHandler;
 
-
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(socketHandler, "/echo").withSockJS();
+        webSocketHandlerRegistry.addHandler(socketHandler, "/echo");
     }
-
 
 }
