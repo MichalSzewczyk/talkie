@@ -23,11 +23,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class MessageHandlerFacade extends TextWebSocketHandler {
     private final Logger logger = LoggerFactory.getLogger(MessageHandlerFacade.class);
+
     private final List<WebSocketSession> establishedSessions;
     private final Map<Long, WebSocketSession> loggedInUsers;
+
     private static final String RECEIVER_NOT_FOUND = "Message receiver: %s not found. Required session is not available or user is not logged in.";
     private static final String NOT_SUPPORTED_MESSAGE = "Not supported message type: %s";
-
 
     private ParsingService parsingService;
 
@@ -44,7 +45,7 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         establishedSessions.add(session);
     }
 
-    void sendMessage(Long receiverId, String message) throws IOException {
+    private void sendMessage(Long receiverId, String message) throws IOException {
         WebSocketSession socketSession = loggedInUsers.get(receiverId);
 
         if (socketSession == null) {
