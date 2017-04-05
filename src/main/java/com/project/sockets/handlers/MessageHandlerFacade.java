@@ -68,7 +68,7 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         Long userID = Long.parseLong(fetchUserStatus.getId());
         loggedInUsers.put(userID, session);
         try {
-            sendMessage(userID, friends.toString());
+            sendMessage(userID, "{\"type\":\"USERS_STATUS\",\"payload\":{\"users\":[{\"id\":\"1\", \"status\":\"1\" }]}}");
         } catch (IOException e) {
             //TODO: how should we solve lack of sender
         }
