@@ -28,7 +28,7 @@ public class JsonParsingService implements ParsingService {
     private CustomMatcher customMatcher;
 
 
-    private MessageType detectClass(String input){
+    private MessageType detectClass(String input) {
         String type = customMatcher.getValue(input);
         return MessageType.valueOf(type);
 

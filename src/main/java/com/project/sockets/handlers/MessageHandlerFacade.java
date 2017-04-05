@@ -62,10 +62,11 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         logger.info(String.format(MESSAGE_SENT, message, receiverId));
     }
 
-    private void handleFetchUserStatus(FetchUserStatus fetchUserStatus) {
+    private void handleFetchUserStatus(FetchUserStatus fetchUserStatus, WebSocketSession session) {
         List<String> friends = fetchUserStatus.getPayload().getListOfUsers();
         friends.retainAll(loggedInUsers.keySet());
         Long userID = Long.parseLong(fetchUserStatus.getId());
+        loggedInUsers.put(userID, session);
         try {
             sendMessage(userID, friends.toString());
         } catch (IOException e) {
@@ -89,10 +90,9 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         String plainTextMessage = message.getPayload();
         Tuple<Object, MessageType> result = parsingService.parseSocketMessage(plainTextMessage);
         logger.info(HANDLING_MESSAGE, message);
-
         switch (result.getValue()) {
             case FETCH_USER_STATUS:
-                handleFetchUserStatus((FetchUserStatus) result.getKey());
+                handleFetchUserStatus((FetchUserStatus) result.getKey(), session);
                 break;
             case SEND_MESSAGE:
                 handleSendMessage((SendMessage) result.getKey());
