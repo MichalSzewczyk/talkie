@@ -17,7 +17,7 @@ public class MessageTypeMatcher implements CustomMatcher {
     public String getValue(String input) {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
-            return matcher.group(1).replaceAll("\"type\":\"", "").replaceAll("\"", "");
+            return matcher.group(0).replaceAll("\"type\":\"", "").replaceAll("\"", "");
         } else {
             throw new IllegalArgumentException("Not supported socket message type.");
         }
