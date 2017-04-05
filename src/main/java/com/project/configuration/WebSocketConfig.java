@@ -15,7 +15,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(socketHandler, "/echo");
+        webSocketHandlerRegistry.addHandler(socketHandler, "/echo").setAllowedOrigins("*");
     }
 
 }
