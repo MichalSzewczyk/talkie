@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.project.sockets.model.payloads.FetchUserStatusPayload;
+import com.project.utils.HandlingVisitor;
+import com.project.utils.Visitable;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"type", "payload"})
-public class FetchUserStatus implements SocketRequestMessage {
+public class FetchUserStatus implements SocketRequestMessage, Visitable {
 
     @JsonProperty("type")
     private String type;
@@ -51,5 +53,10 @@ public class FetchUserStatus implements SocketRequestMessage {
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public void accept(HandlingVisitor handlingVisitor) {
+        handlingVisitor.visit(this);
     }
 }
