@@ -37,10 +37,13 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
     private static final String RECEIVER_NOT_FOUND = "Message receiver: %s not found. Required session is not available or user is not logged in.";
     private static final String NOT_SUPPORTED_MESSAGE = "Not supported message type: %s";
     private static final String ESTABLISHED_CONNECTION = "Established connection with user: %s";
-    private static final String MESSAGE_SENT = "Message: %s sent to user with id: %s";
     private static final String HANDLING_MESSAGE = "Handling socket message: %s";
     private static final String SERIALIZATION_FAILED = "Unable to serialize %s";
     private static final String LOGGED_IN_USERS = "Users logged in: %s when user %s is logging in.";
+    private static final String FAILED_TO_SEND_MESSAGE = "Failed to send message to user: %s";
+    private static final String SENDING_MESSAGE = "Sending message: %s to user %s";
+    private static final String MESSAGE_HANDLING_ERROR = "Error occurred while handling message: %s";
+    private static final String SESSION_INFO = "Got session %s for id %s from id logged in users: %s";
 
     private ParsingService parsingService;
 
@@ -62,13 +65,14 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
     private void sendMessage(Long receiverId, String message) throws IOException {
         WebSocketSession socketSession = loggedInUsers.get(receiverId);
 
+        logger.info(String.format(SESSION_INFO, socketSession, receiverId, loggedInUsers));
+
         if (socketSession == null) {
             logger.info(String.format(RECEIVER_NOT_FOUND, receiverId));
             throw new NoSuchUserException("Couldn't find required user.");
         }
 
         socketSession.sendMessage(new TextMessage(message));
-        logger.info(String.format(MESSAGE_SENT, message, receiverId));
     }
 
     private void handleFetchUserStatus(FetchUserStatus fetchUserStatus, WebSocketSession session) {
@@ -82,7 +86,6 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         if(!responseMessage.isPresent()){
             String errorInfo = String.format(SERIALIZATION_FAILED, USERS_STATUS);
             logger.error(errorInfo);
-            throw new RuntimeException(errorInfo);
         }
 
         try {
@@ -97,11 +100,21 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
     }
 
     private void handleSendMessage(SendMessage sendMessage) {
-        Long receiverId = Long.parseLong(sendMessage.getPayload().getReceiverId());
+        Long receiverId = Long.parseLong(sendMessage.getId());
         String message = sendMessage.getPayload().getBody();
+        logger.info(String.format(SENDING_MESSAGE, message, receiverId));
+
+        Optional<String> responseMessage = parsingService.serialize(sendMessage);
+
+        if(!responseMessage.isPresent()){
+            String errorInfo = String.format(SERIALIZATION_FAILED, USERS_STATUS);
+            logger.error(errorInfo);
+        }
+
         try {
-            sendMessage(receiverId, message);
+            sendMessage(receiverId, responseMessage.get());
         } catch (IOException e) {
+            logger.error(String.format(FAILED_TO_SEND_MESSAGE, receiverId), e);
             //TODO: inform sender about lack of recipient
         }
     }
@@ -111,18 +124,22 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         super.handleTextMessage(session, message);
         String plainTextMessage = message.getPayload();
         Tuple<Object, MessageType> result = parsingService.parseSocketMessage(plainTextMessage);
+
         logger.info(String.format(HANDLING_MESSAGE, message.getPayload()));
-        switch (result.getValue()) {
-            case FETCH_USER_STATUS:
-                handleFetchUserStatus((FetchUserStatus) result.getKey(), session);
-                break;
-            case SEND_MESSAGE:
-                handleSendMessage((SendMessage) result.getKey());
-                break;
-            default:
-                String info = String.format(NOT_SUPPORTED_MESSAGE, result.getValue());
-                logger.error(info);
-                throw new UnsupportedOperationException(info);
+
+        try {
+            switch (result.getValue()) {
+                case FETCH_USER_STATUS:
+                    handleFetchUserStatus((FetchUserStatus) result.getKey(), session);
+                    break;
+                case SEND_MESSAGE:
+                    handleSendMessage((SendMessage) result.getKey());
+                    break;
+                default:
+                    logger.error(String.format(NOT_SUPPORTED_MESSAGE, result.getValue()));
+            }
+        } catch (Exception e) {
+            logger.error(String.format(MESSAGE_HANDLING_ERROR, result.getKey()), e);
         }
     }
 }
