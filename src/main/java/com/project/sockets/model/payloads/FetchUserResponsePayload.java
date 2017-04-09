@@ -7,22 +7,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"listOfUsers"})
+@JsonPropertyOrder({"users"})
 public class FetchUserResponsePayload {
 
     public FetchUserResponsePayload(List<String> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
 
-    @JsonProperty("listOfUsers")
+    @JsonProperty("users")
     private List<String> listOfUsers;
 
-    @JsonProperty("listOfUsers")
+    @JsonProperty("users")
     public List<String> getListOfUsers() {
         return listOfUsers;
     }
 
-    @JsonProperty("listOfUsers")
+    @JsonProperty("users")
     public void setListOfUsers(List<String> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
