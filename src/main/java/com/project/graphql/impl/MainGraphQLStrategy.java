@@ -31,7 +31,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
     public MainGraphQLStrategy(GraphQLUtils graphQLUtils, AccessService databaseAccessFacade) {
         this.graphQLUtils = graphQLUtils;
         this.databaseAccessFacade = databaseAccessFacade;
-        this.userArguments = graphQLUtils.getArgumentList(GraphQLString, "login", "name", "lastName", "password", "avatar", "friends", "success", "message");
+        this.userArguments = graphQLUtils.getArgumentList(GraphQLString, "id", "login", "name", "lastName", "password", "avatar", "friends", "success", "message");
         this.personType = getUserType();
 
     }
@@ -91,6 +91,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
         return newObject()
                 .name("User")
                 .description("personal data for logging")
+                .field(graphQLUtils.getFieldDefinition("id", "Id of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("login", "Login of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("name", "Name of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("lastName", "Last name of the user.", GraphQLString))
