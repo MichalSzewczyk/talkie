@@ -5,15 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.project.sockets.model.payloads.SendMessagePayload;
 
+import java.io.Serializable;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"type","payload"})
-public class SendMessage implements SocketRequestMessage {
+@JsonPropertyOrder({"type","id", "payload"})
+public class SendMessage implements SocketRequestMessage, Serializable {
 
     @JsonProperty("type")
     private String type;
 
     @JsonProperty("payload")
     private SendMessagePayload payload;
+
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("type")
     public String getType() {
@@ -35,4 +40,13 @@ public class SendMessage implements SocketRequestMessage {
         this.payload = payload;
     }
 
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
+    }
 }
