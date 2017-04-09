@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"timestamp", "body"})
 public class SendMessagePayload {
-    @JsonProperty("receiverId")
-    private String receiverId;
     @JsonProperty("timestamp")
     private String timestamp;
     @JsonProperty("body")
@@ -32,15 +30,5 @@ public class SendMessagePayload {
     @JsonProperty("body")
     public void setBody(String body) {
         this.body = body;
-    }
-
-    @JsonProperty("id")
-    public String getReceiverId() {
-        return receiverId;
-    }
-
-    @JsonProperty("id")
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
     }
 }
