@@ -3,6 +3,7 @@ package com.project.sockets.model;
 import com.project.sockets.model.messages.SocketMessage;
 import com.project.sockets.model.messages.requests.*;
 import com.project.sockets.model.messages.responses.FetchUsersStatusResponse;
+import com.project.sockets.model.messages.responses.ReceiveMessage;
 
 public enum MessageType {
     SEND_MESSAGE(SendMessage.class),

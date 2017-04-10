@@ -5,6 +5,7 @@ import com.project.sockets.interfaces.ParsingService;
 import com.project.sockets.model.messages.requests.FetchUserStatus;
 import com.project.sockets.model.messages.requests.SendMessage;
 import com.project.sockets.model.messages.responses.FetchUsersStatusResponse;
+import com.project.sockets.model.messages.responses.ReceiveMessage;
 import com.project.sockets.model.payloads.FetchUsersResponsePayload;
 import com.project.sockets.model.payloads.UserElement;
 import org.slf4j.Logger;
@@ -78,8 +79,9 @@ public class HandlingServiceImpl extends AbstractHandlingService {
         Long receiverId = Long.parseLong(sendMessage.getPayload().getReceiverId());
         String message = sendMessage.getPayload().getBody();
         logger.info(String.format(SENDING_MESSAGE, message, receiverId));
+        ReceiveMessage receiveMessage = new ReceiveMessage(sendMessage);
 
-        Optional<String> responseMessage = parsingService.serialize(sendMessage);
+        Optional<String> responseMessage = parsingService.serialize(receiveMessage);
 
         if (!responseMessage.isPresent()) {
             String errorInfo = String.format(SERIALIZATION_FAILED, USERS_STATUS);

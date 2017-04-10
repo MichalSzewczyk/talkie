@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -19,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class MessageHandlerFacade extends TextWebSocketHandler {
+    private static final String SESSION_CLOSED_INFO = "Session %s closed due to reason: %s";
     private final Logger logger = LoggerFactory.getLogger(MessageHandlerFacade.class);
 
     private final List<WebSocketSession> establishedSessions;
@@ -39,11 +41,18 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
 
     }
 
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         establishedSessions.add(session);
         logger.info(String.format(ESTABLISHED_CONNECTION, session.getUri()));
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+        super.afterConnectionEstablished(session);
+        logger.info(String.format(SESSION_CLOSED_INFO, session, closeStatus.getReason()));
     }
 
     @Override
