@@ -4,8 +4,8 @@ import com.project.sockets.interfaces.ParsingService;
 import com.project.sockets.model.MessageType;
 import com.project.sockets.model.messages.requests.FetchUserStatus;
 import com.project.sockets.model.messages.requests.SendMessage;
-import com.project.utils.Tuple;
 import com.project.utils.HandlingVisitor;
+import com.project.utils.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,27 +31,30 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
     private static final String MESSAGE_HANDLING_ERROR = "Error occurred while handling message: %s";
 
     private final HandlingVisitor handlingVisitor;
+    private final AbstractHandlingService handlingService;
     private final ParsingService parsingService;
 
     @Autowired
-    public MessageHandlerFacade(ParsingService parsingService, HandlingVisitor handlingVisitor) {
+    public MessageHandlerFacade(ParsingService parsingService, HandlingVisitor handlingVisitor, AbstractHandlingService handlingService) {
         this.handlingVisitor = handlingVisitor;
         this.parsingService = parsingService;
+        this.handlingService = handlingService;
         establishedSessions = new CopyOnWriteArrayList<>();
 
     }
-
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         establishedSessions.add(session);
+
         logger.info(String.format(ESTABLISHED_CONNECTION, session.getUri()));
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         super.afterConnectionEstablished(session);
+        handlingService.handleLogout(session);
         logger.info(String.format(SESSION_CLOSED_INFO, session, closeStatus.getReason()));
     }
 
