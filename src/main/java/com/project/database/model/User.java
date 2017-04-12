@@ -25,7 +25,7 @@ public class User implements Serializable {
     private Boolean online;
     private transient String success;
     private transient String message;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "friends", joinColumns = @JoinColumn(name = "who"), inverseJoinColumns = @JoinColumn(name = "with"))
     private List<User> friends;
 

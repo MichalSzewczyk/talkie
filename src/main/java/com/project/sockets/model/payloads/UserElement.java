@@ -1,10 +1,10 @@
 package com.project.sockets.model.payloads;
 
 public class UserElement {
-	private String id;
+	private Integer id;
 	private String status;
 
-	public UserElement(String id, String status) {
+	public UserElement(Integer id, String status) {
 		this.id = id;
 		this.status = status;
 	}
@@ -12,11 +12,11 @@ public class UserElement {
 	public UserElement() {
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
