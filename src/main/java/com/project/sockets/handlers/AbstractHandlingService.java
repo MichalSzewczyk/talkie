@@ -14,4 +14,8 @@ public abstract class AbstractHandlingService {
     public abstract void handleSendMessage(SendMessage sendMessage);
 
     public abstract void handleLogout(WebSocketSession session);
+
+    public abstract void handleNotifyAboutLogout(Integer id);
+
+    public abstract void removeFromCache(WebSocketSession session);
 }

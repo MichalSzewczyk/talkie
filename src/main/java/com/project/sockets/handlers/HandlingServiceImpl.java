@@ -34,6 +34,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     private static final String FAILED_TO_SEND_MESSAGE = "Failed to send message to user: %s";
     private static final String SENDING_MESSAGE = "Sending message: %s to user %s with timestamp %s";
     private static final String LOGGING_OUT_INFO = "Logging out user with id: %s";
+    private static final String NOTIFYING_FRIENDS = "Notifying friends of user: %s";
 
     private ParsingService parsingService;
     private AccessService accessService;
@@ -60,10 +61,14 @@ public class HandlingServiceImpl extends AbstractHandlingService {
 
     @Override
     public void handleFetchUserStatus(FetchUserStatus fetchUserStatus, WebSocketSession session) {
-        List<String> friends = fetchUserStatus.getPayload().getListOfUsers();
+        List<Integer> friends = fetchUserStatus.getPayload().getListOfUsers();
         Integer userID = Integer.parseInt(fetchUserStatus.getId());
         biDirectionalIdAndSessionMapping.put(userID, session);
         logger.info(String.format(LOGGED_IN_USERS, biDirectionalIdAndSessionMapping, userID));
+        sendUserStatusMessage(userID, friends);
+    }
+
+    private void sendUserStatusMessage(Integer userID, List<Integer> friends) {
         FetchUsersStatusResponse response = new FetchUsersStatusResponse(USERS_STATUS.toString(), new FetchUsersResponsePayload(prepareUserElements(friends, biDirectionalIdAndSessionMapping.keySet())));
         Optional<String> responseMessage = parsingService.serialize(response);
 
@@ -104,12 +109,27 @@ public class HandlingServiceImpl extends AbstractHandlingService {
 
     @Override
     public void handleLogout(WebSocketSession session) {
-        int id = biDirectionalIdAndSessionMapping.inverse().remove(session);
+        int id = biDirectionalIdAndSessionMapping.inverse().get(session);
         logger.info(String.format(LOGGING_OUT_INFO, id));
         accessService.logoutUser(id);
+        removeFromCache(session);
+        handleNotifyAboutLogout(id);
+
     }
 
-    private UserElement[] prepareUserElements(List<String> friends, Set<Integer> loggedIn) {
-        return friends.stream().map(Integer::parseInt).map(friendId -> new UserElement(String.valueOf(friendId), (loggedIn.contains(friendId)) ? "1" : "0")).toArray(UserElement[]::new);
+    @Override
+    public void handleNotifyAboutLogout(Integer id) {
+        logger.info(String.format(NOTIFYING_FRIENDS, id));
+        List<Integer> loggedInFriends = accessService.getFriends(id);
+        loggedInFriends.forEach(friendId -> sendUserStatusMessage(friendId, accessService.getFriends(friendId)));
+    }
+
+    @Override
+    public void removeFromCache(WebSocketSession session) {
+        biDirectionalIdAndSessionMapping.inverse().remove(session);
+    }
+
+    private UserElement[] prepareUserElements(List<Integer> friends, Set<Integer> loggedIn) {
+        return friends.stream().map(friendId -> new UserElement(friendId, (loggedIn.contains(friendId)) ? "1" : "0")).toArray(UserElement[]::new);
     }
 }
