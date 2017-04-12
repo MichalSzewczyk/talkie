@@ -2,6 +2,8 @@ package com.project.database.interfaces;
 
 import com.project.database.model.User;
 
+import java.util.List;
+
 public interface AccessService {
     User registerUser(String login, String name, String lastName, String password, String avatar, boolean online);
 
@@ -10,4 +12,6 @@ public interface AccessService {
     void logoutUser(Integer id);
 
     void saveMessage(Integer sender, Integer receiver, Long timestamp, String message);
+
+    List<Integer> getFriends(Integer id);
 }

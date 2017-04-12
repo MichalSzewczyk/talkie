@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public final class DatabaseAccessFacade implements AccessService {
     private final Logger logger = LoggerFactory.getLogger(DatabaseAccessFacade.class);
@@ -66,6 +69,12 @@ public final class DatabaseAccessFacade implements AccessService {
     public void saveMessage(Integer sender, Integer receiver, Long timestamp, String message) {
         Message entity = new Message(sender, receiver, timestamp, message);
         messageRepository.save(entity);
+    }
+
+    @Override
+    public List<Integer> getFriends(Integer id) {
+        User user = userRepository.findOne(id);
+        return user.getFriends().stream().map(User::getId).collect(Collectors.toList());
     }
 
 }
