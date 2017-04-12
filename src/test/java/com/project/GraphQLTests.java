@@ -1,7 +1,9 @@
 package com.project;
 
 import com.project.database.impl.DatabaseAccessFacade;
+import com.project.database.model.Message;
 import com.project.database.model.User;
+import com.project.database.repositories.MessageRepository;
 import com.project.database.repositories.UserRepository;
 import com.project.graphql.GraphQLFactory;
 import com.project.graphql.impl.MainGraphQLStrategy;
@@ -28,16 +30,20 @@ public class GraphQLTests {
 
     private GraphQL graphQLService;
     private User tmpUser;
+    private Message tmpMessage;
 
     @Before
     public void setupTestingEnvironment() {
         UserRepository userRepository = mock(UserRepository.class);
+        MessageRepository messageRepository = mock(MessageRepository.class);
         tmpUser = new User(LOGIN, PASSWORD);
+        tmpMessage = new Message();
 
         when(userRepository.findOneByLogin(LOGIN)).thenReturn(tmpUser);
         when(userRepository.save(tmpUser)).thenReturn(tmpUser);
+        when(messageRepository.save(tmpMessage)).thenReturn(tmpMessage);
 
-        this.graphQLService = new GraphQLFactory(new MainGraphQLStrategy(new GraphQLUtils(), new DatabaseAccessFacade(userRepository))).getGraphQL();
+        this.graphQLService = new GraphQLFactory(new MainGraphQLStrategy(new GraphQLUtils(), new DatabaseAccessFacade(userRepository, messageRepository))).getGraphQL();
     }
 
     @Test
