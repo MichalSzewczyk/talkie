@@ -14,7 +14,7 @@ import java.util.List;
 @JsonPropertyOrder({"type", "payload"})
 public class FindUserResponse implements SocketResponseMessage, Serializable {
 
-    public FindUserResponse(String id, List<User> users) {
+    public FindUserResponse(Integer id, List<User> users) {
         this.payload = new FindUserResponsePayload(users);
         this.id = id;
         this.type = MessageType.FIND_USER_RESPONSE.toString();
@@ -24,7 +24,7 @@ public class FindUserResponse implements SocketResponseMessage, Serializable {
     private String type;
 
     @JsonProperty("id")
-    private String id;
+    private Integer id;
     @JsonProperty("payload")
     private FindUserResponsePayload payload;
 
@@ -49,12 +49,12 @@ public class FindUserResponse implements SocketResponseMessage, Serializable {
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

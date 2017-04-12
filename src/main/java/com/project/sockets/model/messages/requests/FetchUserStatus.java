@@ -19,7 +19,7 @@ public class FetchUserStatus implements SocketRequestMessage, Visitable {
     private String type;
 
     @JsonProperty("id")
-    private String id;
+    private Integer id;
     @JsonProperty("payload")
     private FetchUserStatusPayload payload;
     @JsonIgnore
@@ -46,12 +46,12 @@ public class FetchUserStatus implements SocketRequestMessage, Visitable {
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

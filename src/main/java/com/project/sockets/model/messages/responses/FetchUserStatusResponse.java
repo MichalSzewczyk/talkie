@@ -11,7 +11,7 @@ import java.util.List;
 @JsonPropertyOrder({"type", "payload"})
 public class FetchUserStatusResponse implements SocketResponseMessage {
 
-    public FetchUserStatusResponse(List<String> ids) {
+    public FetchUserStatusResponse(List<Integer> ids) {
         payload = new FetchUserResponsePayload(ids);
     }
 
@@ -19,7 +19,7 @@ public class FetchUserStatusResponse implements SocketResponseMessage {
     private String type;
 
     @JsonProperty("id")
-    private String id;
+    private Integer id;
     @JsonProperty("payload")
     private FetchUserResponsePayload payload;
 
@@ -44,12 +44,12 @@ public class FetchUserStatusResponse implements SocketResponseMessage {
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

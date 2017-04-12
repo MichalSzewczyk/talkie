@@ -10,20 +10,20 @@ import java.util.List;
 @JsonPropertyOrder({"users"})
 public class FetchUserResponsePayload {
 
-    public FetchUserResponsePayload(List<String> listOfUsers) {
+    public FetchUserResponsePayload(List<Integer> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
 
     @JsonProperty("users")
-    private List<String> listOfUsers;
+    private List<Integer> listOfUsers;
 
     @JsonProperty("users")
-    public List<String> getListOfUsers() {
+    public List<Integer> getListOfUsers() {
         return listOfUsers;
     }
 
     @JsonProperty("users")
-    public void setListOfUsers(List<String> listOfUsers) {
+    public void setListOfUsers(List<Integer> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
 }
