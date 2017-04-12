@@ -3,6 +3,7 @@ package com.project.sockets.handlers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.project.sockets.model.messages.requests.FetchUserStatus;
+import com.project.sockets.model.messages.requests.FindUser;
 import com.project.sockets.model.messages.requests.SendMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -18,4 +19,7 @@ public abstract class AbstractHandlingService {
     public abstract void handleNotifyAboutLogout(Integer id);
 
     public abstract void removeFromCache(WebSocketSession session);
+
+    public abstract void handleFindUser(FindUser findUser, WebSocketSession session);
 }
+

@@ -1,11 +1,14 @@
 package com.project.sockets.handlers;
 
 import com.project.database.interfaces.AccessService;
+import com.project.database.model.User;
 import com.project.sockets.exceptions.NoSuchUserException;
 import com.project.sockets.interfaces.ParsingService;
 import com.project.sockets.model.messages.requests.FetchUserStatus;
+import com.project.sockets.model.messages.requests.FindUser;
 import com.project.sockets.model.messages.requests.SendMessage;
 import com.project.sockets.model.messages.responses.FetchUsersStatusResponse;
+import com.project.sockets.model.messages.responses.FindUserResponse;
 import com.project.sockets.model.messages.responses.ReceiveMessage;
 import com.project.sockets.model.payloads.FetchUsersResponsePayload;
 import com.project.sockets.model.payloads.UserElement;
@@ -17,6 +20,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -46,19 +50,6 @@ public class HandlingServiceImpl extends AbstractHandlingService {
         this.accessService = accessService;
     }
 
-    private void sendMessage(Integer receiverId, String message) throws IOException {
-        WebSocketSession socketSession = biDirectionalIdAndSessionMapping.get(receiverId);
-
-        logger.info(String.format(SESSION_INFO, socketSession, receiverId, biDirectionalIdAndSessionMapping));
-
-        if (socketSession == null) {
-            logger.info(String.format(RECEIVER_NOT_FOUND, receiverId));
-            throw new NoSuchUserException("Couldn't find required user.");
-        }
-
-        socketSession.sendMessage(new TextMessage(message));
-    }
-
     @Override
     public void handleFetchUserStatus(FetchUserStatus fetchUserStatus, WebSocketSession session) {
         List<Integer> friends = fetchUserStatus.getPayload().getListOfUsers();
@@ -68,43 +59,14 @@ public class HandlingServiceImpl extends AbstractHandlingService {
         sendUserStatusMessage(userID, friends);
     }
 
-    private void sendUserStatusMessage(Integer userID, List<Integer> friends) {
-        FetchUsersStatusResponse response = new FetchUsersStatusResponse(USERS_STATUS.toString(), new FetchUsersResponsePayload(prepareUserElements(friends, biDirectionalIdAndSessionMapping.keySet())));
-        Optional<String> responseMessage = parsingService.serialize(response);
-
-        if (!responseMessage.isPresent()) {
-            String errorInfo = String.format(SERIALIZATION_FAILED, USERS_STATUS);
-            logger.error(errorInfo);
-        }
-
-        try {
-            sendMessage(userID, responseMessage.get());
-        } catch (IOException e) {
-            //TODO: how should we solve lack of sender
-        }
-    }
-
     @Override
     public void handleSendMessage(SendMessage sendMessage) {
         Integer receiverId = Integer.parseInt(sendMessage.getPayload().getReceiverId());
         String message = sendMessage.getPayload().getBody();
         logger.info(String.format(SENDING_MESSAGE, message, receiverId, sendMessage.getPayload().getTimestamp()));
         ReceiveMessage receiveMessage = new ReceiveMessage(sendMessage);
-
-        Optional<String> responseMessage = parsingService.serialize(receiveMessage);
-
-        if (!responseMessage.isPresent()) {
-            String errorInfo = String.format(SERIALIZATION_FAILED, USERS_STATUS);
-            logger.error(errorInfo);
-        }
-
-        try {
-            sendMessage(receiverId, responseMessage.get());
-            accessService.saveMessage(Integer.parseInt(sendMessage.getId()), receiverId, sendMessage.getPayload().getTimestamp().getTime(), sendMessage.getPayload().getBody());
-        } catch (IOException e) {
-            logger.error(String.format(FAILED_TO_SEND_MESSAGE, receiverId), e);
-            //TODO: inform sender about lack of recipient
-        }
+        accessService.saveMessage(Integer.parseInt(sendMessage.getId()), receiverId, sendMessage.getPayload().getTimestamp().getTime(), sendMessage.getPayload().getBody());
+        serializeAndSendMessage(receiverId, receiveMessage);
     }
 
     @Override
@@ -114,7 +76,6 @@ public class HandlingServiceImpl extends AbstractHandlingService {
         accessService.logoutUser(id);
         removeFromCache(session);
         handleNotifyAboutLogout(id);
-
     }
 
     @Override
@@ -129,7 +90,48 @@ public class HandlingServiceImpl extends AbstractHandlingService {
         biDirectionalIdAndSessionMapping.inverse().remove(session);
     }
 
+    @Override
+    public void handleFindUser(FindUser findUser, WebSocketSession session) {
+        String letters = findUser.getPayload().getLetters();
+        List<User> users = accessService.getUsersByLetters(letters);
+        FindUserResponse response = new FindUserResponse(findUser.getId(), users);
+        serializeAndSendMessage(Integer.parseInt(findUser.getId()), response);
+    }
+
     private UserElement[] prepareUserElements(List<Integer> friends, Set<Integer> loggedIn) {
         return friends.stream().map(friendId -> new UserElement(friendId, (loggedIn.contains(friendId)) ? "1" : "0")).toArray(UserElement[]::new);
+    }
+
+    private void sendMessage(Integer receiverId, String message) throws IOException {
+        WebSocketSession socketSession = biDirectionalIdAndSessionMapping.get(receiverId);
+
+        logger.info(String.format(SESSION_INFO, socketSession, receiverId, biDirectionalIdAndSessionMapping));
+
+        if (socketSession == null) {
+            logger.info(String.format(RECEIVER_NOT_FOUND, receiverId));
+            throw new NoSuchUserException("Couldn't find required user.");
+        }
+
+        socketSession.sendMessage(new TextMessage(message));
+    }
+
+    private void serializeAndSendMessage(Integer receiverId, Serializable serializable) {
+        Optional<String> responseMessage = parsingService.serialize(serializable);
+
+        if (!responseMessage.isPresent()) {
+            String errorInfo = String.format(SERIALIZATION_FAILED, USERS_STATUS);
+            logger.error(errorInfo);
+        }
+
+        try {
+            sendMessage(receiverId, responseMessage.orElseThrow(NullPointerException::new));
+        } catch (IOException e) {
+            logger.error(String.format(FAILED_TO_SEND_MESSAGE, receiverId), e);
+        }
+    }
+
+    private void sendUserStatusMessage(Integer userID, List<Integer> friends) {
+        FetchUsersStatusResponse response = new FetchUsersStatusResponse(USERS_STATUS.toString(), new FetchUsersResponsePayload(prepareUserElements(friends, biDirectionalIdAndSessionMapping.keySet())));
+        serializeAndSendMessage(userID, response);
     }
 }
