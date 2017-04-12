@@ -14,7 +14,7 @@ public class SendMessagePayload {
     @JsonProperty("body")
     private String body;
     @JsonProperty("receiverId")
-    private String receiverId;
+    private Integer receiverId;
 
     @JsonProperty("timestamp")
     public Timestamp getTimestamp() {
@@ -37,12 +37,12 @@ public class SendMessagePayload {
     }
 
     @JsonProperty("receiverId")
-    public String getReceiverId() {
+    public Integer getReceiverId() {
         return receiverId;
     }
 
     @JsonProperty("receiverId")
-    public void setReceiverId(String receiverId) {
+    public void setReceiverId(Integer receiverId) {
         this.receiverId = receiverId;
     }
 }
