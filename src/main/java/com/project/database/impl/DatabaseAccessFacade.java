@@ -1,7 +1,9 @@
 package com.project.database.impl;
 
 import com.project.database.interfaces.AccessService;
+import com.project.database.model.Message;
 import com.project.database.model.User;
+import com.project.database.repositories.MessageRepository;
 import com.project.database.repositories.UserRepository;
 import com.project.enums.DatabaseOperationMessage;
 import org.slf4j.Logger;
@@ -15,10 +17,12 @@ public final class DatabaseAccessFacade implements AccessService {
     private static final String USER_LOGGED_IN = "User %s logged in with success.";
 
     private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
     @Autowired
-    public DatabaseAccessFacade(UserRepository userRepository) {
+    public DatabaseAccessFacade(UserRepository userRepository, MessageRepository messageRepository) {
         this.userRepository = userRepository;
+        this.messageRepository = messageRepository;
     }
 
     @Override
@@ -56,6 +60,12 @@ public final class DatabaseAccessFacade implements AccessService {
         User user = userRepository.findOne(login);
         user.setOnline(false);
         userRepository.save(user);
+    }
+
+    @Override
+    public void saveMessage(Integer sender, Integer receiver, Long timestamp, String message) {
+        Message entity = new Message(sender, receiver, timestamp, message);
+        messageRepository.save(entity);
     }
 
 }

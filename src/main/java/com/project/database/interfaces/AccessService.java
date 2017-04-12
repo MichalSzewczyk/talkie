@@ -8,4 +8,6 @@ public interface AccessService {
     User loginUser(String login, String password);
 
     void logoutUser(Integer id);
+
+    void saveMessage(Integer sender, Integer receiver, Long timestamp, String message);
 }
