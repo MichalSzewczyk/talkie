@@ -32,7 +32,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     private static final String LOGGED_IN_USERS = "Users logged in: %s when user %s is fetching users.";
     private static final String SERIALIZATION_FAILED = "Unable to serialize %s";
     private static final String FAILED_TO_SEND_MESSAGE = "Failed to send message to user: %s";
-    private static final String SENDING_MESSAGE = "Sending message: %s to user %s";
+    private static final String SENDING_MESSAGE = "Sending message: %s to user %s with timestamp %s";
     private static final String LOGGING_OUT_INFO = "Logging out user with id: %s";
 
     private ParsingService parsingService;
@@ -83,7 +83,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     public void handleSendMessage(SendMessage sendMessage) {
         Integer receiverId = Integer.parseInt(sendMessage.getPayload().getReceiverId());
         String message = sendMessage.getPayload().getBody();
-        logger.info(String.format(SENDING_MESSAGE, message, receiverId));
+        logger.info(String.format(SENDING_MESSAGE, message, receiverId, sendMessage.getPayload().getTimestamp()));
         ReceiveMessage receiveMessage = new ReceiveMessage(sendMessage);
 
         Optional<String> responseMessage = parsingService.serialize(receiveMessage);
@@ -95,6 +95,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
 
         try {
             sendMessage(receiverId, responseMessage.get());
+            accessService.saveMessage(Integer.parseInt(sendMessage.getId()), receiverId, sendMessage.getPayload().getTimestamp().getTime(), sendMessage.getPayload().getBody());
         } catch (IOException e) {
             logger.error(String.format(FAILED_TO_SEND_MESSAGE, receiverId), e);
             //TODO: inform sender about lack of recipient
