@@ -2,6 +2,7 @@ package com.project.utils;
 
 import com.project.sockets.handlers.AbstractHandlingService;
 import com.project.sockets.model.messages.requests.FetchUserStatus;
+import com.project.sockets.model.messages.requests.FindUser;
 import com.project.sockets.model.messages.requests.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,10 @@ public class MessageHandlingVisitor extends HandlingVisitor {
     @Override
     public void visit(SendMessage sendMessage) {
         handlingService.handleSendMessage(sendMessage);
+    }
+
+    @Override
+    public void visit(FindUser findUser) {
+        handlingService.handleFindUser(findUser , session);
     }
 }
