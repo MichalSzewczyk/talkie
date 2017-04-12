@@ -14,4 +14,7 @@ public interface AccessService {
     void saveMessage(Integer sender, Integer receiver, Long timestamp, String message);
 
     List<Integer> getFriends(Integer id);
+
+    List<User> getUsersByLetters (String letters);
+
 }

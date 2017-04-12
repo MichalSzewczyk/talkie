@@ -77,4 +77,9 @@ public final class DatabaseAccessFacade implements AccessService {
         return user.getFriends().stream().map(User::getId).collect(Collectors.toList());
     }
 
+    @Override
+    public List<User> getUsersByLetters(String letters) {
+        return userRepository.findByLoginStartsWithIgnoreCaseOrNameStartsWithIgnoreCaseOrLastNameStartsWithIgnoreCase(letters, letters, letters);
+    }
+
 }
