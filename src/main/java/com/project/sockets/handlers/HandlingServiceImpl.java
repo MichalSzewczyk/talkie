@@ -53,7 +53,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     @Override
     public void handleFetchUserStatus(FetchUserStatus fetchUserStatus, WebSocketSession session) {
         List<Integer> friends = fetchUserStatus.getPayload().getListOfUsers();
-        Integer userID = Integer.parseInt(fetchUserStatus.getId());
+        Integer userID = fetchUserStatus.getId();
         biDirectionalIdAndSessionMapping.put(userID, session);
         logger.info(String.format(LOGGED_IN_USERS, biDirectionalIdAndSessionMapping, userID));
         sendUserStatusMessage(userID, friends);
@@ -61,11 +61,11 @@ public class HandlingServiceImpl extends AbstractHandlingService {
 
     @Override
     public void handleSendMessage(SendMessage sendMessage) {
-        Integer receiverId = Integer.parseInt(sendMessage.getPayload().getReceiverId());
+        Integer receiverId = sendMessage.getPayload().getReceiverId();
         String message = sendMessage.getPayload().getBody();
         logger.info(String.format(SENDING_MESSAGE, message, receiverId, sendMessage.getPayload().getTimestamp()));
         ReceiveMessage receiveMessage = new ReceiveMessage(sendMessage);
-        accessService.saveMessage(Integer.parseInt(sendMessage.getId()), receiverId, sendMessage.getPayload().getTimestamp().getTime(), sendMessage.getPayload().getBody());
+        accessService.saveMessage(sendMessage.getId(), receiverId, sendMessage.getPayload().getTimestamp().getTime(), sendMessage.getPayload().getBody());
         serializeAndSendMessage(receiverId, receiveMessage);
     }
 
@@ -95,7 +95,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
         String letters = findUser.getPayload().getLetters();
         List<User> users = accessService.getUsersByLetters(letters);
         FindUserResponse response = new FindUserResponse(findUser.getId(), users);
-        serializeAndSendMessage(Integer.parseInt(findUser.getId()), response);
+        serializeAndSendMessage(findUser.getId(), response);
     }
 
     private UserElement[] prepareUserElements(List<Integer> friends, Set<Integer> loggedIn) {
