@@ -3,6 +3,7 @@ package com.project.sockets.handlers;
 import com.project.sockets.interfaces.ParsingService;
 import com.project.sockets.model.MessageType;
 import com.project.sockets.model.messages.requests.FetchUserStatus;
+import com.project.sockets.model.messages.requests.FindUser;
 import com.project.sockets.model.messages.requests.SendMessage;
 import com.project.utils.HandlingVisitor;
 import com.project.utils.Tuple;
@@ -74,6 +75,9 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
                     break;
                 case SEND_MESSAGE:
                     handlingVisitor.visit((SendMessage) result.getKey());
+                    break;
+                case FIND_USER:
+                    handlingVisitor.visit((FindUser) result.getKey());
                     break;
                 default:
                     logger.error(String.format(NOT_SUPPORTED_MESSAGE, result.getValue()));

@@ -3,6 +3,7 @@ package com.project.sockets.model;
 import com.project.sockets.model.messages.SocketMessage;
 import com.project.sockets.model.messages.requests.*;
 import com.project.sockets.model.messages.responses.FetchUsersStatusResponse;
+import com.project.sockets.model.messages.responses.FindUserResponse;
 import com.project.sockets.model.messages.responses.ReceiveMessage;
 
 public enum MessageType {
@@ -11,7 +12,9 @@ public enum MessageType {
     PING(Ping.class),
     CLOSE_STREAM(CloseStream.class),
     FETCH_USER_STATUS(FetchUserStatus.class),
-    USERS_STATUS(FetchUsersStatusResponse.class);
+    USERS_STATUS(FetchUsersStatusResponse.class),
+    FIND_USER(FindUser.class),
+    FIND_USER_RESPONSE(FindUserResponse.class),;
 
     private final Class<? extends SocketMessage> socketMessageClass;
 
