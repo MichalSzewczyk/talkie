@@ -11,15 +11,15 @@ import java.util.List;
 public class FetchUserStatusPayload {
 
     @JsonProperty("listOfUsers")
-    private List<String> listOfUsers;
+    private List<Integer> listOfUsers;
 
     @JsonProperty("listOfUsers")
-    public List<String> getListOfUsers() {
+    public List<Integer> getListOfUsers() {
         return listOfUsers;
     }
 
     @JsonProperty("listOfUsers")
-    public void setListOfUsers(List<String> listOfUsers) {
+    public void setListOfUsers(List<Integer> listOfUsers) {
         this.listOfUsers = listOfUsers;
     }
 }
