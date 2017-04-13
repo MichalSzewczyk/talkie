@@ -12,9 +12,7 @@ public enum MessageType {
     FETCH_USER_STATUS(FetchUserStatus.class),
     USERS_STATUS(FetchUsersStatusResponse.class),
     FIND_USER(FindUser.class),
-    FIND_USER_RESPONSE(FindUserResponse.class),
-
-    ;
+    FIND_USER_RESPONSE(FindUserResponse.class),;
 
     private final Class<? extends SocketMessage> socketMessageClass;
 
