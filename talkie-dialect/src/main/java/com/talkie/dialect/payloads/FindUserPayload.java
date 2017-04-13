@@ -1,4 +1,4 @@
-package com.talkie.sockets.model.payloads;
+package com.talkie.dialect.payloads;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

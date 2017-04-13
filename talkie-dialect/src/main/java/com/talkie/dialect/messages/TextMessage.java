@@ -1,32 +1,34 @@
-package com.talkie.sockets.model.messages.responses;
+package com.talkie.dialect.messages;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.talkie.sockets.model.MessageType;
-import com.talkie.database.model.User;
-import com.talkie.sockets.model.payloads.FindUserResponsePayload;
+import com.talkie.dialect.MessageType;
+import com.talkie.dialect.messages.requests.SendMessage;
+import com.talkie.dialect.payloads.SendMessagePayload;
 
 import java.io.Serializable;
-import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"type", "payload"})
-public class FindUserResponse implements SocketResponseMessage, Serializable {
+@JsonPropertyOrder({"type", "id", "payload"})
+public class TextMessage implements SocketMessage, Serializable {
+    public TextMessage() {
+    }
 
-    public FindUserResponse(Integer id, List<User> users) {
-        this.payload = new FindUserResponsePayload(users);
-        this.id = id;
-        this.type = MessageType.FIND_USER_RESPONSE.toString();
+    public TextMessage(SendMessage sendMessage, MessageType messageType) {
+        this.payload = sendMessage.getPayload();
+        this.id = sendMessage.getId();
+        this.type = messageType.toString();
     }
 
     @JsonProperty("type")
     private String type;
 
+    @JsonProperty("payload")
+    private SendMessagePayload payload;
+
     @JsonProperty("id")
     private Integer id;
-    @JsonProperty("payload")
-    private FindUserResponsePayload payload;
 
     @JsonProperty("type")
     public String getType() {
@@ -39,12 +41,12 @@ public class FindUserResponse implements SocketResponseMessage, Serializable {
     }
 
     @JsonProperty("payload")
-    public FindUserResponsePayload getPayload() {
+    public SendMessagePayload getPayload() {
         return payload;
     }
 
     @JsonProperty("payload")
-    public void setPayload(FindUserResponsePayload payload) {
+    public void setPayload(SendMessagePayload payload) {
         this.payload = payload;
     }
 

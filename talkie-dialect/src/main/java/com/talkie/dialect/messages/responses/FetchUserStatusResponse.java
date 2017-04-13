@@ -1,34 +1,27 @@
-package com.talkie.sockets.model.messages;
+package com.talkie.dialect.messages.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.talkie.sockets.model.MessageType;
-import com.talkie.sockets.model.messages.requests.SendMessage;
-import com.talkie.sockets.model.payloads.SendMessagePayload;
+import com.talkie.dialect.payloads.FetchUserResponsePayload;
 
-import java.io.Serializable;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"type", "id", "payload"})
-public class TextMessage implements SocketMessage, Serializable {
-    public TextMessage() {
-    }
+@JsonPropertyOrder({"type", "payload"})
+public class FetchUserStatusResponse implements SocketResponseMessage {
 
-    public TextMessage(SendMessage sendMessage, MessageType messageType) {
-        this.payload = sendMessage.getPayload();
-        this.id = sendMessage.getId();
-        this.type = messageType.toString();
+    public FetchUserStatusResponse(List<Integer> ids) {
+        payload = new FetchUserResponsePayload(ids);
     }
 
     @JsonProperty("type")
     private String type;
 
-    @JsonProperty("payload")
-    private SendMessagePayload payload;
-
     @JsonProperty("id")
     private Integer id;
+    @JsonProperty("payload")
+    private FetchUserResponsePayload payload;
 
     @JsonProperty("type")
     public String getType() {
@@ -41,12 +34,12 @@ public class TextMessage implements SocketMessage, Serializable {
     }
 
     @JsonProperty("payload")
-    public SendMessagePayload getPayload() {
+    public FetchUserResponsePayload getPayload() {
         return payload;
     }
 
     @JsonProperty("payload")
-    public void setPayload(SendMessagePayload payload) {
+    public void setPayload(FetchUserResponsePayload payload) {
         this.payload = payload;
     }
 

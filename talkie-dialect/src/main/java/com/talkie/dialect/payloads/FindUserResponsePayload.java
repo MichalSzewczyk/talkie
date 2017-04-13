@@ -1,9 +1,9 @@
-package com.talkie.sockets.model.payloads;
+package com.talkie.dialect.payloads;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.talkie.database.model.User;
+import com.talkie.dialect.messages.model.User;
 
 import java.util.List;
 
