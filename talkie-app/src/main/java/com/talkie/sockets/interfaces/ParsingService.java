@@ -1,6 +1,6 @@
 package com.talkie.sockets.interfaces;
 
-import com.talkie.sockets.model.MessageType;
+import com.talkie.dialect.MessageType;
 import com.talkie.utils.Tuple;
 
 import java.io.IOException;

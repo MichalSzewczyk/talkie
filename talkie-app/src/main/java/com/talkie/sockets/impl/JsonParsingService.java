@@ -2,9 +2,9 @@ package com.talkie.sockets.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.talkie.dialect.MessageType;
 import com.talkie.sockets.interfaces.CustomMatcher;
 import com.talkie.sockets.interfaces.ParsingService;
-import com.talkie.sockets.model.MessageType;
 import com.talkie.utils.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

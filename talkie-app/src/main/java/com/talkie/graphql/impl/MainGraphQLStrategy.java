@@ -89,7 +89,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
 
     private GraphQLObjectType getUserType() {
         return newObject()
-                .name("User")
+                .name("UserModel")
                 .description("personal data for logging")
                 .field(graphQLUtils.getFieldDefinition("id", "Id of the user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("login", "Login of the user.", GraphQLString))

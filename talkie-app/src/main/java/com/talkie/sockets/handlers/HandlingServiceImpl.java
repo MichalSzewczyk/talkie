@@ -1,18 +1,19 @@
 package com.talkie.sockets.handlers;
 
 import com.talkie.database.interfaces.AccessService;
-import com.talkie.database.model.User;
+import com.talkie.database.model.UserModel;
+import com.talkie.dialect.MessageType;
 import com.talkie.sockets.exceptions.NoSuchUserException;
 import com.talkie.sockets.interfaces.ParsingService;
-import com.talkie.sockets.model.MessageType;
-import com.talkie.sockets.model.messages.responses.FindUserResponse;
-import com.talkie.sockets.model.messages.requests.FetchUserStatus;
-import com.talkie.sockets.model.messages.requests.FindUser;
-import com.talkie.sockets.model.messages.requests.SendMessage;
-import com.talkie.sockets.model.messages.responses.FetchUsersStatusResponse;
-import com.talkie.sockets.model.messages.responses.ReceiveMessage;
-import com.talkie.sockets.model.payloads.FetchUsersResponsePayload;
-import com.talkie.sockets.model.payloads.UserElement;
+import com.talkie.dialect.messages.responses.FindUserResponse;
+import com.talkie.dialect.messages.requests.FetchUserStatus;
+import com.talkie.dialect.messages.requests.FindUser;
+import com.talkie.dialect.messages.requests.SendMessage;
+import com.talkie.dialect.messages.responses.FetchUsersStatusResponse;
+import com.talkie.dialect.messages.responses.ReceiveMessage;
+import com.talkie.dialect.payloads.FetchUsersResponsePayload;
+import com.talkie.dialect.payloads.UserElement;
+import com.talkie.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,8 +93,9 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     @Override
     public void handleFindUser(FindUser findUser, WebSocketSession session) {
         String letters = findUser.getPayload().getLetters();
-        List<User> users = accessService.getUsersByLetters(letters);
-        FindUserResponse response = new FindUserResponse(findUser.getId(), users);
+        List<UserModel> userModels = accessService.getUsersByLetters(letters);
+
+        FindUserResponse response = new FindUserResponse(findUser.getId(), Utils.convertDatabaseUsersToUsers(userModels));
         serializeAndSendMessage(findUser.getId(), response);
     }
 

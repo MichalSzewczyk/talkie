@@ -1,13 +1,13 @@
 package com.talkie.database.interfaces;
 
-import com.talkie.database.model.User;
+import com.talkie.database.model.UserModel;
 
 import java.util.List;
 
 public interface AccessService {
-    User registerUser(String login, String name, String lastName, String password, String avatar, boolean online);
+    UserModel registerUser(String login, String name, String lastName, String password, String avatar, boolean online);
 
-    User loginUser(String login, String password);
+    UserModel loginUser(String login, String password);
 
     void logoutUser(Integer id);
 
@@ -15,6 +15,6 @@ public interface AccessService {
 
     List<Integer> getFriends(Integer id);
 
-    List<User> getUsersByLetters (String letters);
+    List<UserModel> getUsersByLetters (String letters);
 
 }
