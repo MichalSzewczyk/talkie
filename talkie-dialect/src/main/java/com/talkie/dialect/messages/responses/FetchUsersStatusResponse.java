@@ -1,9 +1,9 @@
-package com.talkie.sockets.model.messages.responses;
+package com.talkie.dialect.messages.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.talkie.sockets.model.payloads.FetchUsersResponsePayload;
+import com.talkie.dialect.payloads.FetchUsersResponsePayload;
 
 import java.io.Serializable;
 

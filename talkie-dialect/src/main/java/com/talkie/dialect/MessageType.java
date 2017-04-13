@@ -1,10 +1,10 @@
-package com.talkie.sockets.model;
+package com.talkie.dialect;
 
-import com.talkie.sockets.model.messages.SocketMessage;
-import com.talkie.sockets.model.messages.requests.*;
-import com.talkie.sockets.model.messages.responses.FetchUsersStatusResponse;
-import com.talkie.sockets.model.messages.responses.FindUserResponse;
-import com.talkie.sockets.model.messages.responses.ReceiveMessage;
+import com.talkie.dialect.messages.SocketMessage;
+import com.talkie.dialect.messages.requests.*;
+import com.talkie.dialect.messages.responses.FetchUsersStatusResponse;
+import com.talkie.dialect.messages.responses.FindUserResponse;
+import com.talkie.dialect.messages.responses.ReceiveMessage;
 
 public enum MessageType {
     SEND_MESSAGE(SendMessage.class),

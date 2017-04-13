@@ -1,4 +1,4 @@
-package com.talkie.sockets.model.payloads;
+package com.talkie.dialect.payloads;
 
 public class UserElement {
 	private Integer id;

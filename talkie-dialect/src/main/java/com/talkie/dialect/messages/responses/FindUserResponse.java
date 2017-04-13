@@ -1,18 +1,23 @@
-package com.talkie.sockets.model.messages.responses;
+package com.talkie.dialect.messages.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.talkie.sockets.model.payloads.FetchUserResponsePayload;
+import com.talkie.dialect.MessageType;
+import com.talkie.dialect.messages.model.User;
+import com.talkie.dialect.payloads.FindUserResponsePayload;
 
+import java.io.Serializable;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"type", "payload"})
-public class FetchUserStatusResponse implements SocketResponseMessage {
+public class FindUserResponse implements SocketResponseMessage, Serializable {
 
-    public FetchUserStatusResponse(List<Integer> ids) {
-        payload = new FetchUserResponsePayload(ids);
+    public FindUserResponse(Integer id, List<User> users) {
+        this.payload = new FindUserResponsePayload(users);
+        this.id = id;
+        this.type = MessageType.FIND_USER_RESPONSE.toString();
     }
 
     @JsonProperty("type")
@@ -21,7 +26,7 @@ public class FetchUserStatusResponse implements SocketResponseMessage {
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("payload")
-    private FetchUserResponsePayload payload;
+    private FindUserResponsePayload payload;
 
     @JsonProperty("type")
     public String getType() {
@@ -34,12 +39,12 @@ public class FetchUserStatusResponse implements SocketResponseMessage {
     }
 
     @JsonProperty("payload")
-    public FetchUserResponsePayload getPayload() {
+    public FindUserResponsePayload getPayload() {
         return payload;
     }
 
     @JsonProperty("payload")
-    public void setPayload(FetchUserResponsePayload payload) {
+    public void setPayload(FindUserResponsePayload payload) {
         this.payload = payload;
     }
 
