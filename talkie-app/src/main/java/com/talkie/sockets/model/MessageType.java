@@ -9,8 +9,6 @@ import com.talkie.sockets.model.messages.responses.ReceiveMessage;
 public enum MessageType {
     SEND_MESSAGE(SendMessage.class),
     RECEIVE_MESSAGE(ReceiveMessage.class),
-    PING(Ping.class),
-    CLOSE_STREAM(CloseStream.class),
     FETCH_USER_STATUS(FetchUserStatus.class),
     USERS_STATUS(FetchUsersStatusResponse.class),
     FIND_USER(FindUser.class),
