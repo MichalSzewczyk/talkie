@@ -2,7 +2,7 @@ package com.talkie.database.impl;
 
 import com.talkie.database.interfaces.AccessService;
 import com.talkie.database.model.Message;
-import com.talkie.database.model.User;
+import com.talkie.database.model.UserModel;
 import com.talkie.database.repositories.MessageRepository;
 import com.talkie.database.repositories.UserRepository;
 import com.talkie.enums.DatabaseOperationMessage;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public final class DatabaseAccessFacade implements AccessService {
     private final Logger logger = LoggerFactory.getLogger(DatabaseAccessFacade.class);
-    private static final String USER_LOGGED_IN = "User %s logged in with success.";
+    private static final String USER_LOGGED_IN = "UserModel %s logged in with success.";
 
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
@@ -29,40 +29,40 @@ public final class DatabaseAccessFacade implements AccessService {
     }
 
     @Override
-    public User registerUser(String login, String name, String lastName, String password, String avatar, boolean online) {
-        User user = userRepository.findOneByLogin(login);
-        if (user != null) {
-            user.setSuccess(String.valueOf(false));
-            user.setMessage(DatabaseOperationMessage.USER_ALREADY_EXiSTS.toString());
+    public UserModel registerUser(String login, String name, String lastName, String password, String avatar, boolean online) {
+        UserModel userModel = userRepository.findOneByLogin(login);
+        if (userModel != null) {
+            userModel.setSuccess(String.valueOf(false));
+            userModel.setMessage(DatabaseOperationMessage.USER_ALREADY_EXiSTS.toString());
         } else {
-            user = new User(login, name, lastName, password, avatar, online, String.valueOf(true), DatabaseOperationMessage.SUCCESS.toString());
-            userRepository.save(user);
-            user.setSuccess(String.valueOf(true));
+            userModel = new UserModel(login, name, lastName, password, avatar, online, String.valueOf(true), DatabaseOperationMessage.SUCCESS.toString());
+            userRepository.save(userModel);
+            userModel.setSuccess(String.valueOf(true));
         }
-        return user;
+        return userModel;
     }
 
     @Override
-    public User loginUser(String login, String password) {
-        User user = userRepository.findOneByLogin(login);
-        if (user == null) {
-            user = new User(String.valueOf(false), DatabaseOperationMessage.USER_NOT_FOUND.toString());
-        } else if (!password.equals(user.getPassword())) {
-            user = new User(String.valueOf(false), DatabaseOperationMessage.INCORRECT_PASSWORD.toString());
+    public UserModel loginUser(String login, String password) {
+        UserModel userModel = userRepository.findOneByLogin(login);
+        if (userModel == null) {
+            userModel = new UserModel(String.valueOf(false), DatabaseOperationMessage.USER_NOT_FOUND.toString());
+        } else if (!password.equals(userModel.getPassword())) {
+            userModel = new UserModel(String.valueOf(false), DatabaseOperationMessage.INCORRECT_PASSWORD.toString());
         } else {
-            user.setOnline(true);
-            userRepository.save(user);
-            user.setSuccess(String.valueOf(true));
+            userModel.setOnline(true);
+            userRepository.save(userModel);
+            userModel.setSuccess(String.valueOf(true));
             logger.info(String.format(USER_LOGGED_IN, login));
         }
-        return user;
+        return userModel;
     }
 
     @Override
     public void logoutUser(Integer login) {
-        User user = userRepository.findOne(login);
-        user.setOnline(false);
-        userRepository.save(user);
+        UserModel userModel = userRepository.findOne(login);
+        userModel.setOnline(false);
+        userRepository.save(userModel);
     }
 
     @Override
@@ -73,12 +73,12 @@ public final class DatabaseAccessFacade implements AccessService {
 
     @Override
     public List<Integer> getFriends(Integer id) {
-        User user = userRepository.findOne(id);
-        return user.getFriends().stream().map(User::getId).collect(Collectors.toList());
+        UserModel userModel = userRepository.findOne(id);
+        return userModel.getFriends().stream().map(UserModel::getId).collect(Collectors.toList());
     }
 
     @Override
-    public List<User> getUsersByLetters(String letters) {
+    public List<UserModel> getUsersByLetters(String letters) {
         return userRepository.findByLoginStartsWithIgnoreCaseOrNameStartsWithIgnoreCaseOrLastNameStartsWithIgnoreCase(letters, letters, letters);
     }
 

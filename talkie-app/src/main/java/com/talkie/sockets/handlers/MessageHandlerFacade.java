@@ -1,12 +1,12 @@
 package com.talkie.sockets.handlers;
 
+import com.talkie.dialect.MessageType;
+import com.talkie.dialect.messages.requests.FetchUserStatus;
+import com.talkie.dialect.messages.requests.FindUser;
+import com.talkie.dialect.messages.requests.SendMessage;
 import com.talkie.sockets.interfaces.ParsingService;
-import com.talkie.sockets.model.MessageType;
-import com.talkie.sockets.model.messages.requests.FetchUserStatus;
-import com.talkie.sockets.model.messages.requests.FindUser;
 import com.talkie.utils.HandlingVisitor;
 import com.talkie.utils.Tuple;
-import com.talkie.sockets.model.messages.requests.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

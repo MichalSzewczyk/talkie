@@ -1,8 +1,8 @@
 package com.talkie.utils;
 
-import com.talkie.sockets.model.messages.requests.FetchUserStatus;
-import com.talkie.sockets.model.messages.requests.FindUser;
-import com.talkie.sockets.model.messages.requests.SendMessage;
+import com.talkie.dialect.messages.requests.FetchUserStatus;
+import com.talkie.dialect.messages.requests.FindUser;
+import com.talkie.dialect.messages.requests.SendMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 

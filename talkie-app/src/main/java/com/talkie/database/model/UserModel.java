@@ -1,12 +1,15 @@
 package com.talkie.database.model;
 
+import com.talkie.dialect.messages.model.User;
+import com.talkie.utils.Utils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class UserModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,12 +30,24 @@ public class User implements Serializable {
     private transient String message;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "friends", joinColumns = @JoinColumn(name = "who"), inverseJoinColumns = @JoinColumn(name = "with"))
-    private List<User> friends;
+    private List<UserModel> friends;
 
-    public User() {
+    public UserModel() {
     }
 
-    public User(String login, String name, String lastName, String password, String avatar, Boolean online) {
+    public UserModel(User user) {
+        this.login = user.getLogin();
+        this.name = user.getName();
+        this.lastName = user.getLastName();
+        this.password = user.getPassword();
+        this.avatar = user.getAvatar();
+        this.online = user.getOnline();
+        this.friends = Utils.convertUsersToUserModel(user.getFriends());
+        this.success = user.getSuccess();
+        this.message = user.getMessage();
+    }
+
+    public UserModel(String login, String name, String lastName, String password, String avatar, Boolean online) {
         this.login = login;
         this.name = name;
         this.lastName = lastName;
@@ -41,20 +56,20 @@ public class User implements Serializable {
         this.online = online;
     }
 
-    public User(String login, String name, String lastName, String password, String avatar, Boolean online, String success, String message) {
+    public UserModel(String login, String name, String lastName, String password, String avatar, Boolean online, String success, String message) {
         this(login, name, lastName, password, avatar, online);
         this.success = success;
         this.message = message;
     }
 
-    public User(String success, String message) {
+    public UserModel(String success, String message) {
         this.success = success;
         this.message = message;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserModel{" +
                 "id=" + id +
                 '}';
     }
@@ -99,11 +114,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public List<User> getFriends() {
+    public List<UserModel> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
+    public void setFriends(List<UserModel> friends) {
         this.friends = friends;
     }
 
