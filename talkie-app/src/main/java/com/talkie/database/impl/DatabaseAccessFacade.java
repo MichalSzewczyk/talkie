@@ -6,6 +6,7 @@ import com.talkie.database.model.UserModel;
 import com.talkie.database.repositories.MessageRepository;
 import com.talkie.database.repositories.UserRepository;
 import com.talkie.enums.DatabaseOperationMessage;
+import com.talkie.graphql.model.SearchDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,13 @@ public final class DatabaseAccessFacade implements AccessService {
     @Override
     public List<UserModel> getUsersByLetters(String letters) {
         return userRepository.findByLoginStartsWithIgnoreCaseOrNameStartsWithIgnoreCaseOrLastNameStartsWithIgnoreCase(letters, letters, letters);
+    }
+
+    @Override
+    public SearchDTO searchUsers(String requestingId, String letters, String topNumber){
+        List<UserModel> users = userRepository.findByLoginStartsWithIgnoreCaseOrNameStartsWithIgnoreCaseOrLastNameStartsWithIgnoreCase(letters, letters, letters);
+        return new SearchDTO(requestingId, letters, topNumber, users);
+
     }
 
 }
