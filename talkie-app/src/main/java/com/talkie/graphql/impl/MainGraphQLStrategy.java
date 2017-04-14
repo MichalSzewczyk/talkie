@@ -2,8 +2,8 @@ package com.talkie.graphql.impl;
 
 
 import com.talkie.database.interfaces.AccessService;
-import com.talkie.utils.GraphQLUtils;
 import com.talkie.graphql.interfaces.GraphQLStrategy;
+import com.talkie.utils.GraphQLUtils;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLList;
@@ -24,6 +24,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
     private final AccessService databaseAccessFacade;
     private final GraphQLUtils graphQLUtils;
     private final List<GraphQLArgument> userArguments;
+    private final List<GraphQLArgument> searchArguments;
     private final GraphQLObjectType personType;
 
 
@@ -32,6 +33,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
         this.graphQLUtils = graphQLUtils;
         this.databaseAccessFacade = databaseAccessFacade;
         this.userArguments = graphQLUtils.getArgumentList(GraphQLString, "id", "login", "name", "lastName", "password", "avatar", "friends", "success", "message");
+        this.searchArguments = graphQLUtils.getArgumentList(GraphQLString, "letters", "length");
         this.personType = getUserType();
 
     }
@@ -43,7 +45,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
 
     @Override
     public List<GraphQLFieldDefinition> getFields() {
-        return Arrays.asList(getLoginField(), getRegisterField());
+        return Arrays.asList(getLoginField(), getRegisterField(), getSearchField());
     }
 
     private GraphQLFieldDefinition getRegisterField() {
@@ -75,6 +77,19 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                         )).build();
     }
 
+    private GraphQLFieldDefinition getSearchField() {
+        return newFieldDefinition()
+                .name("search")
+                .type(getSearchResultType())
+                .argument(searchArguments)
+                .dataFetcher(fetchingEnvironment -> databaseAccessFacade
+                        .searchUsers(
+                                fetchingEnvironment.getArgument("id"),
+                                fetchingEnvironment.getArgument("letters"),
+                                fetchingEnvironment.getArgument("length")
+                        )).build();
+    }
+
     private GraphQLObjectType getFriendType() {
         return newObject()
                 .name("Friend")
@@ -100,6 +115,17 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .field(graphQLUtils.getFieldDefinition("error", "True if operation succeed.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("message", "Information about error.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("online", "Online status of the user.", GraphQLBoolean))
+                .field(graphQLUtils.getFieldDefinition("friends", "List of user's friends", new GraphQLList(getFriendType())))
+                .build();
+    }
+
+    private GraphQLObjectType getSearchResultType() {
+        return newObject()
+                .name("SearchResultModel")
+                .description("List of users matching criteria.")
+                .field(graphQLUtils.getFieldDefinition("id", "Id of the user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("letters", "Letters to match user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("length", "Top length of users.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("friends", "List of user's friends", new GraphQLList(getFriendType())))
                 .build();
     }
