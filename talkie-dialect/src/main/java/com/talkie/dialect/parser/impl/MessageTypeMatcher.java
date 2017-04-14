@@ -3,12 +3,10 @@ package com.talkie.dialect.parser.impl;
 import com.talkie.dialect.parser.interfaces.CustomMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service
 public class MessageTypeMatcher implements CustomMatcher {
     private final Pattern pattern;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageTypeMatcher.class);
