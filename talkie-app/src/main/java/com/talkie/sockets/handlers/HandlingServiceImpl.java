@@ -3,16 +3,16 @@ package com.talkie.sockets.handlers;
 import com.talkie.database.interfaces.AccessService;
 import com.talkie.database.model.UserModel;
 import com.talkie.dialect.MessageType;
-import com.talkie.sockets.exceptions.NoSuchUserException;
-import com.talkie.dialect.parser.interfaces.ParsingService;
-import com.talkie.dialect.messages.responses.FindUserResponse;
 import com.talkie.dialect.messages.requests.FetchUserStatus;
 import com.talkie.dialect.messages.requests.FindUser;
 import com.talkie.dialect.messages.requests.SendMessage;
 import com.talkie.dialect.messages.responses.FetchUsersStatusResponse;
+import com.talkie.dialect.messages.responses.FindUserResponse;
 import com.talkie.dialect.messages.responses.ReceiveMessage;
+import com.talkie.dialect.parser.interfaces.ParsingService;
 import com.talkie.dialect.payloads.FetchUsersResponsePayload;
 import com.talkie.dialect.payloads.UserElement;
+import com.talkie.sockets.exceptions.NoSuchUserException;
 import com.talkie.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +37,11 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     private static final String SERIALIZATION_FAILED = "Unable to serialize %s";
     private static final String FAILED_TO_SEND_MESSAGE = "Failed to send message to user: %s";
     private static final String SENDING_MESSAGE = "Sending message: %s to user %s with timestamp %s";
-    private static final String LOGGING_OUT_INFO = "Logging out user with id: %s";
+    private static final String DISCONNECT_INFO = "Disconnecting user with id: %s";
     private static final String NOTIFYING_FRIENDS = "Notifying friends of user: %s";
 
-    private ParsingService parsingService;
-    private AccessService accessService;
+    private final ParsingService parsingService;
+    private final AccessService accessService;
 
 
     @Autowired
@@ -54,9 +54,15 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     public void handleFetchUserStatus(FetchUserStatus fetchUserStatus, WebSocketSession session) {
         List<Integer> friends = fetchUserStatus.getPayload().getListOfUsers();
         Integer userID = fetchUserStatus.getId();
-        biDirectionalIdAndSessionMapping.put(userID, session);
+        if (!biDirectionalIdAndSessionMapping.containsKey(userID))
+            handleLoggingIn(userID, session);
         logger.info(String.format(LOGGED_IN_USERS, biDirectionalIdAndSessionMapping, userID));
         sendUserStatusMessage(userID, friends);
+    }
+
+    private void handleLoggingIn(Integer userID, WebSocketSession session) {
+        biDirectionalIdAndSessionMapping.put(userID, session);
+        handleNotifyAboutChangingStatusOfUser(userID);
     }
 
     @Override
@@ -70,19 +76,21 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     }
 
     @Override
-    public void handleLogout(WebSocketSession session) {
-        int id = biDirectionalIdAndSessionMapping.inverse().get(session);
-        logger.info(String.format(LOGGING_OUT_INFO, id));
-        accessService.logoutUser(id);
-        removeFromCache(session);
-        handleNotifyAboutLogout(id);
+    public void handleDisconnect(WebSocketSession session) {
+        Integer id = biDirectionalIdAndSessionMapping.inverse().get(session);
+        if(!(id == null)) {
+            accessService.logoutUser(id);
+            removeFromCache(session);
+            handleNotifyAboutChangingStatusOfUser(id);
+        }
+        logger.info(String.format(DISCONNECT_INFO, (id == null) ? "Not logged user" : id));
     }
 
     @Override
-    public void handleNotifyAboutLogout(Integer id) {
+    public void handleNotifyAboutChangingStatusOfUser(Integer id) {
         logger.info(String.format(NOTIFYING_FRIENDS, id));
         List<Integer> loggedInFriends = accessService.getFriends(id);
-        loggedInFriends.forEach(friendId -> sendUserStatusMessage(friendId, accessService.getFriends(friendId)));
+        loggedInFriends.stream().filter(biDirectionalIdAndSessionMapping::containsKey).forEach(friendId -> sendUserStatusMessage(friendId, accessService.getFriends(friendId)));
     }
 
     @Override
