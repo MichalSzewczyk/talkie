@@ -1,6 +1,7 @@
 package com.talkie.dialect.parser.interfaces;
 
 import com.talkie.dialect.MessageType;
+import com.talkie.dialect.messages.SocketMessage;
 import com.talkie.dialect.utils.Tuple;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public interface ParsingService {
      * type of that message according to MessageType enum.
      *
      */
-    Tuple<Object, MessageType> parseSocketMessage(String json) throws IOException;
+    Tuple<? extends SocketMessage, MessageType> parseSocketMessage(String json) throws IOException;
 
     /**
      * Method is responsible for serializing object to json

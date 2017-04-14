@@ -3,29 +3,27 @@ package com.talkie.dialect.parser.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talkie.dialect.MessageType;
+import com.talkie.dialect.messages.SocketMessage;
 import com.talkie.dialect.parser.interfaces.CustomMatcher;
 import com.talkie.dialect.parser.interfaces.ParsingService;
 import com.talkie.dialect.utils.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
 
-@Service
 public class JsonParsingFacade implements ParsingService {
     private final Logger logger = LoggerFactory.getLogger(JsonParsingFacade.class);
     private final static String JSON_EXCEPTION = "Unable to %s object: %s";
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
+    private final CustomMatcher customMatcher;
 
-    @Resource(name = "messageTypeMatcher")
-    private CustomMatcher customMatcher;
+    public JsonParsingFacade(ObjectMapper objectMapper, CustomMatcher customMatcher) {
+        this.objectMapper = objectMapper;
+        this.customMatcher = customMatcher;
+    }
 
     private MessageType detectClass(String input) {
         String type = customMatcher.getValue(input);
@@ -33,7 +31,7 @@ public class JsonParsingFacade implements ParsingService {
     }
 
     @Override
-    public Tuple<Object, MessageType> parseSocketMessage(String json) throws IOException {
+    public Tuple<? extends SocketMessage, MessageType> parseSocketMessage(String json) throws IOException {
         MessageType detectedClass = detectClass(json);
         return new Tuple<>(objectMapper.readValue(json, detectedClass.getSocketMessageClass()), detectedClass);
     }
