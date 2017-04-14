@@ -1,6 +1,7 @@
 package com.talkie.sockets.handlers;
 
 import com.talkie.dialect.MessageType;
+import com.talkie.dialect.messages.SocketMessage;
 import com.talkie.dialect.messages.requests.FetchUserStatus;
 import com.talkie.dialect.messages.requests.FindUser;
 import com.talkie.dialect.messages.requests.SendMessage;
@@ -41,7 +42,6 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         this.parsingService = parsingService;
         this.handlingService = handlingService;
         establishedSessions = new CopyOnWriteArrayList<>();
-
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         super.handleTextMessage(session, message);
         String plainTextMessage = message.getPayload();
-        Tuple<Object, MessageType> result = parsingService.parseSocketMessage(plainTextMessage);
+        Tuple<? extends SocketMessage, MessageType> result = parsingService.parseSocketMessage(plainTextMessage);
         handlingVisitor.setSession(session);
 
         logger.info(String.format(HANDLING_MESSAGE, message.getPayload()));
