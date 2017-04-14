@@ -80,12 +80,12 @@ public final class DatabaseAccessFacade implements AccessService {
 
     @Override
     public List<UserModel> getUsersByLetters(String letters) {
-        return userRepository.findByLoginStartsWithIgnoreCaseOrNameStartsWithIgnoreCaseOrLastNameStartsWithIgnoreCase(letters, letters, letters);
+        return userRepository.findUsersWithPartOfNameOrLastName(letters);
     }
 
     @Override
     public SearchDTO searchUsers(String requestingId, String letters, String topNumber){
-        List<UserModel> users = userRepository.findByLoginStartsWithIgnoreCaseOrNameStartsWithIgnoreCaseOrLastNameStartsWithIgnoreCase(letters, letters, letters);
+        List<UserModel> users = userRepository.findUsersWithPartOfNameOrLastName(letters);
         return new SearchDTO(requestingId, letters, topNumber, users);
 
     }
