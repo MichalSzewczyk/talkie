@@ -1,6 +1,7 @@
 package com.talkie.database.interfaces;
 
 import com.talkie.database.model.UserModel;
+import com.talkie.graphql.model.SearchDTO;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface AccessService {
     List<Integer> getFriends(Integer id);
 
     List<UserModel> getUsersByLetters (String letters);
+
+    SearchDTO searchUsers(String requestingId, String letters, String topNumber);
 
 }
