@@ -1,11 +1,11 @@
-package com.talkie.sockets.impl;
+package com.talkie.dialect.parser.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talkie.dialect.MessageType;
-import com.talkie.sockets.interfaces.CustomMatcher;
-import com.talkie.sockets.interfaces.ParsingService;
-import com.talkie.utils.Tuple;
+import com.talkie.dialect.parser.interfaces.CustomMatcher;
+import com.talkie.dialect.parser.interfaces.ParsingService;
+import com.talkie.dialect.utils.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,8 @@ import java.io.Serializable;
 import java.util.Optional;
 
 @Service
-public class JsonParsingService implements ParsingService {
-    private final Logger logger = LoggerFactory.getLogger(JsonParsingService.class);
+public class JsonParsingFacade implements ParsingService {
+    private final Logger logger = LoggerFactory.getLogger(JsonParsingFacade.class);
     private final static String JSON_EXCEPTION = "Unable to %s object: %s";
 
     @Autowired
@@ -27,11 +27,9 @@ public class JsonParsingService implements ParsingService {
     @Resource(name = "messageTypeMatcher")
     private CustomMatcher customMatcher;
 
-
     private MessageType detectClass(String input) {
         String type = customMatcher.getValue(input);
         return MessageType.valueOf(type);
-
     }
 
     @Override
@@ -61,6 +59,4 @@ public class JsonParsingService implements ParsingService {
         }
         return Optional.ofNullable(result);
     }
-
-
 }
