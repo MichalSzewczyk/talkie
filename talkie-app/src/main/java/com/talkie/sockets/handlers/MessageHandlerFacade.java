@@ -55,7 +55,7 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         super.afterConnectionEstablished(session);
-        handlingService.handleLogout(session);
+        handlingService.handleDisconnect(session);
         logger.info(String.format(SESSION_CLOSED_INFO, session, closeStatus.getReason()));
     }
 
