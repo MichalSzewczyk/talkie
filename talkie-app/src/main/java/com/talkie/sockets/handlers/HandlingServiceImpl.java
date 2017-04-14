@@ -4,7 +4,7 @@ import com.talkie.database.interfaces.AccessService;
 import com.talkie.database.model.UserModel;
 import com.talkie.dialect.MessageType;
 import com.talkie.sockets.exceptions.NoSuchUserException;
-import com.talkie.sockets.interfaces.ParsingService;
+import com.talkie.dialect.parser.interfaces.ParsingService;
 import com.talkie.dialect.messages.responses.FindUserResponse;
 import com.talkie.dialect.messages.requests.FetchUserStatus;
 import com.talkie.dialect.messages.requests.FindUser;

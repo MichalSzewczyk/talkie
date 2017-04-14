@@ -1,6 +1,6 @@
-package com.talkie.sockets.impl;
+package com.talkie.dialect.parser.impl;
 
-import com.talkie.sockets.interfaces.CustomMatcher;
+import com.talkie.dialect.parser.interfaces.CustomMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class MessageTypeMatcher implements CustomMatcher {
-    private Pattern pattern;
+    private final Pattern pattern;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageTypeMatcher.class);
     private static final String PARSED_TYPE = "Parsed type is: %s";
 
