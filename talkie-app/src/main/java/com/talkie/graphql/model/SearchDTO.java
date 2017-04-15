@@ -8,13 +8,13 @@ public class SearchDTO {
     private String id;
     private String letters;
     private String length;
-    private List<UserModel> users;
+    private List<UserModel> friends;
 
-    public SearchDTO(String id, String letters, String length, List<UserModel> users) {
+    public SearchDTO(String id, String letters, String length, List<UserModel> friends) {
         this.id = id;
         this.letters = letters;
         this.length = length;
-        this.users = users;
+        this.friends = friends;
     }
 
     public String getId() {
@@ -41,11 +41,11 @@ public class SearchDTO {
         this.length = length;
     }
 
-    public List<UserModel> getUsers() {
-        return users;
+    public List<UserModel> getFriends() {
+        return friends;
     }
 
-    public void setUsers(List<UserModel> users) {
-        this.users = users;
+    public void setFriends(List<UserModel> friends) {
+        this.friends = friends;
     }
 }
