@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<UserModel, Integer> {
     UserModel findOneByLogin(String login);
 
-    @Query("SELECT u.name FROM UserModel u WHERE u.name LIKE CONCAT('%',:letters,'%') OR u.lastName LIKE CONCAT('%',:letters,'%')")
+    @Query("SELECT u FROM UserModel u WHERE LOWER(u.name) LIKE CONCAT('%',:letters,'%') OR LOWER(u.lastName) LIKE CONCAT('%',:letters,'%')")
     List<UserModel> findUsersWithPartOfNameOrLastName(@Param("letters") String letters);
     
 }
