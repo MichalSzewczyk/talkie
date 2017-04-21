@@ -18,8 +18,6 @@ public class TalkieController {
     private static final String GRAPH_QL_ERROR = "Error: %s, while executing graphQl query for request body: %s";
     private static final String GRAPH_QL_RESULT = "Result of request: %s";
     private final WebService webService;
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     public TalkieController(WebService webService) {
