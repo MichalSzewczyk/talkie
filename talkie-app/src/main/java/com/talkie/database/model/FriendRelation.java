@@ -14,6 +14,14 @@ public class FriendRelation {
     @Column(name = "with")
     private Integer with;
 
+    public FriendRelation(Integer who, Integer with) {
+        this.who = who;
+        this.with = with;
+    }
+
+    public FriendRelation() {
+    }
+
     public Integer getId() {
         return id;
     }
