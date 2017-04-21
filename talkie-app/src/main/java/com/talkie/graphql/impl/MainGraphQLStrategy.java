@@ -25,6 +25,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
     private final GraphQLUtils graphQLUtils;
     private final List<GraphQLArgument> userArguments;
     private final List<GraphQLArgument> searchArguments;
+    private final List<GraphQLArgument> makeFriendsArguments;
     private final GraphQLObjectType personType;
 
 
@@ -34,6 +35,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
         this.databaseAccessFacade = databaseAccessFacade;
         this.userArguments = graphQLUtils.getArgumentList(GraphQLString, "id", "login", "name", "lastName", "password", "avatar", "friends", "success", "message");
         this.searchArguments = graphQLUtils.getArgumentList(GraphQLString, "letters", "length");
+        this.makeFriendsArguments = graphQLUtils.getArgumentList(GraphQLString, "who", "with", "success");
         this.personType = getUserType();
 
     }
@@ -90,6 +92,18 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                         )).build();
     }
 
+    private GraphQLFieldDefinition getMakeFriendsField() {
+        return newFieldDefinition()
+                .name("makeFriends")
+                .type(getMakeFriendsType())
+                .argument(makeFriendsArguments)
+                .dataFetcher(fetchingEnvironment -> databaseAccessFacade
+                        .makeFriends(
+                                fetchingEnvironment.getArgument("who"),
+                                fetchingEnvironment.getArgument("with")
+                        )).build();
+    }
+
     private GraphQLObjectType getFriendType() {
         return newObject()
                 .name("Friend")
@@ -127,6 +141,16 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .field(graphQLUtils.getFieldDefinition("letters", "Letters to match user.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("length", "Top length of users.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("friends", "List of user's friends", new GraphQLList(getFriendType())))
+                .build();
+    }
+
+    private GraphQLObjectType getMakeFriendsType() {
+        return newObject()
+                .name("MakeFriendsModel")
+                .description("Result of establishing friend relation.")
+                .field(graphQLUtils.getFieldDefinition("who", "Id of the user establishing friend relation.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("with", "Id of user with whom user is establishing connection.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("success", "Top length of users.", GraphQLString))
                 .build();
     }
 }
