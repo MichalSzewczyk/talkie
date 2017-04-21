@@ -1,8 +1,10 @@
 package com.talkie.database.impl;
 
 import com.talkie.database.interfaces.AccessService;
+import com.talkie.database.model.FriendRelation;
 import com.talkie.database.model.Message;
 import com.talkie.database.model.UserModel;
+import com.talkie.database.repositories.FriendsRepository;
 import com.talkie.database.repositories.MessageRepository;
 import com.talkie.database.repositories.UserRepository;
 import com.talkie.enums.DatabaseOperationMessage;
@@ -22,11 +24,13 @@ public final class DatabaseAccessFacade implements AccessService {
 
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
+    private final FriendsRepository friendsRepository;
 
     @Autowired
-    public DatabaseAccessFacade(UserRepository userRepository, MessageRepository messageRepository) {
+    public DatabaseAccessFacade(UserRepository userRepository, MessageRepository messageRepository, FriendsRepository friendsRepository) {
         this.userRepository = userRepository;
         this.messageRepository = messageRepository;
+        this.friendsRepository = friendsRepository;
     }
 
     @Override
@@ -88,6 +92,17 @@ public final class DatabaseAccessFacade implements AccessService {
         List<UserModel> users = userRepository.findUsersWithPartOfNameOrLastName(letters);
         return new SearchDTO(requestingId, letters, topNumber, users);
 
+    }
+
+    @Override
+    public boolean makeFriends(Integer who, Integer with) {
+        try {
+            friendsRepository.save(new FriendRelation(who, with));
+        }catch(Throwable throwable){
+            logger.error("Exception thrown while persisting friend relation", throwable);
+            return false;
+        }
+        return true;
     }
 
 }

@@ -20,4 +20,6 @@ public interface AccessService {
 
     SearchDTO searchUsers(String requestingId, String letters, String topNumber);
 
+    boolean makeFriends(Integer who, Integer with);
+
 }
