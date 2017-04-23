@@ -7,7 +7,7 @@ import com.talkie.database.model.UserModel;
 import com.talkie.database.repositories.FriendsRepository;
 import com.talkie.database.repositories.MessageRepository;
 import com.talkie.database.repositories.UserRepository;
-import com.talkie.enums.DatabaseOperationMessage;
+import com.talkie.dialect.messages.enums.DatabaseOperationMessage;
 import com.talkie.graphql.model.SearchDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public final class DatabaseAccessFacade implements AccessService {
+    private static final String FRIEND_RELATION_ERROR = "Exception thrown while %s friend relation for friends: who: %s, with %s";
     private final Logger logger = LoggerFactory.getLogger(DatabaseAccessFacade.class);
     private static final String USER_LOGGED_IN = "UserModel %s logged in with success.";
 
@@ -56,6 +57,7 @@ public final class DatabaseAccessFacade implements AccessService {
             userModel = new UserModel(String.valueOf(false), DatabaseOperationMessage.INCORRECT_PASSWORD.toString());
         } else {
             userModel.setOnline(true);
+            userModel.setMessage(DatabaseOperationMessage.SUCCESS.toString());
             userRepository.save(userModel);
             userModel.setSuccess(String.valueOf(true));
             logger.info(String.format(USER_LOGGED_IN, login));
@@ -95,11 +97,25 @@ public final class DatabaseAccessFacade implements AccessService {
     }
 
     @Override
-    public boolean makeFriends(Integer who, Integer with) {
+    public FriendRelation makeFriends(String who, String with) {
+        FriendRelation tmp = new FriendRelation(Integer.valueOf(who), Integer.valueOf(with));
         try {
-            friendsRepository.save(new FriendRelation(who, with));
+            friendsRepository.save(tmp);
+            tmp.setSuccess(true);
         }catch(Throwable throwable){
-            logger.error("Exception thrown while persisting friend relation", throwable);
+            logger.error(String.format(FRIEND_RELATION_ERROR, "creating", who, with), throwable);
+            tmp.setSuccess(false);
+        }
+        return tmp;
+    }
+
+    @Override
+    public boolean removeFriends(Integer who, Integer with) {
+        try {
+            FriendRelation relationToRemove = friendsRepository.findOneByWhoAndWith(who, with);
+            friendsRepository.delete(relationToRemove.getId());
+        } catch (Throwable throwable) {
+            logger.error(String.format(FRIEND_RELATION_ERROR, "deleting", who, with), throwable);
             return false;
         }
         return true;
