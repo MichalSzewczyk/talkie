@@ -14,21 +14,25 @@ public class User implements Serializable {
     private transient String success;
     private transient String message;
     private List<User> friends;
+    private String description;
+    private String error;
 
     public User() {
     }
 
-    public User(String login, String name, String lastName, String password, String avatar, Boolean online) {
+    public User(String login, String name, String lastName, String password, String avatar, Boolean online, String description, String error) {
         this.login = login;
         this.name = name;
         this.lastName = lastName;
         this.password = password;
         this.avatar = avatar;
         this.online = online;
+        this.description = description;
+        this.error = error;
     }
 
-    public User(String login, String name, String lastName, String password, String avatar, Boolean online, String success, String message) {
-        this(login, name, lastName, password, avatar, online);
+    public User(String login, String name, String lastName, String password, String avatar, Boolean online, String success, String message, String description, String error) {
+        this(login, name, lastName, password, avatar, online, description, error);
         this.success = success;
         this.message = message;
     }
@@ -123,5 +127,21 @@ public class User implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
