@@ -1,4 +1,4 @@
-package com.talkie.enums;
+package com.talkie.dialect.messages.enums;
 
 public enum DatabaseOperationMessage {
     SUCCESS("UserModel successfully logged in."),
