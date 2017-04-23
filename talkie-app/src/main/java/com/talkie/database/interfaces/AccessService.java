@@ -1,5 +1,6 @@
 package com.talkie.database.interfaces;
 
+import com.talkie.database.model.FriendRelation;
 import com.talkie.database.model.UserModel;
 import com.talkie.graphql.model.SearchDTO;
 
@@ -20,6 +21,8 @@ public interface AccessService {
 
     SearchDTO searchUsers(String requestingId, String letters, String topNumber);
 
-    boolean makeFriends(Integer who, Integer with);
+    FriendRelation makeFriends(String who, String with);
+
+    boolean removeFriends(Integer who, Integer with);
 
 }
