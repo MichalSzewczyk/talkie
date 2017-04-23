@@ -6,13 +6,15 @@ import javax.persistence.*;
 @Table(name="friends")
 public class FriendRelation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
     @Column(name = "who")
     private Integer who;
-    @Column(name = "with")
+    @Column(name = "with_whom")
     private Integer with;
+
+    private Boolean success;
 
     public FriendRelation(Integer who, Integer with) {
         this.who = who;
@@ -44,5 +46,13 @@ public class FriendRelation {
 
     public void setWith(Integer with) {
         this.with = with;
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 }
