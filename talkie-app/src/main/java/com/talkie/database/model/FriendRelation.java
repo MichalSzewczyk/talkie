@@ -14,7 +14,7 @@ public class FriendRelation {
     @Column(name = "with_whom")
     private Integer with;
 
-    private Boolean success;
+    private transient Boolean success;
 
     public FriendRelation(Integer who, Integer with) {
         this.who = who;
