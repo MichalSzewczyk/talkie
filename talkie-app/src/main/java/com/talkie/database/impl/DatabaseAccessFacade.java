@@ -110,9 +110,9 @@ public final class DatabaseAccessFacade implements AccessService {
     }
 
     @Override
-    public boolean removeFriends(Integer who, Integer with) {
+    public boolean removeFriends(String who, String with) {
         try {
-            FriendRelation relationToRemove = friendsRepository.findOneByWhoAndWith(who, with);
+            FriendRelation relationToRemove = friendsRepository.findOneByWhoAndWith(Integer.valueOf(who), Integer.valueOf(with));
             friendsRepository.delete(relationToRemove.getId());
         } catch (Throwable throwable) {
             logger.error(String.format(FRIEND_RELATION_ERROR, "deleting", who, with), throwable);

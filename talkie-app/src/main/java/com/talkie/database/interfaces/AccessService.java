@@ -23,6 +23,6 @@ public interface AccessService {
 
     FriendRelation makeFriends(String who, String with);
 
-    boolean removeFriends(Integer who, Integer with);
+    boolean removeFriends(String who, String with);
 
 }
