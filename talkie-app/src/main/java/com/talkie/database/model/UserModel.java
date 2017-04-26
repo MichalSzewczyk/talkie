@@ -29,7 +29,7 @@ public class UserModel implements Serializable {
     private transient String success;
     private transient String message;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "friends", joinColumns = @JoinColumn(name = "who"), inverseJoinColumns = @JoinColumn(name = "with_whom"))
+    @JoinTable(name = "friends", joinColumns = @JoinColumn(name = "who"), inverseJoinColumns = @JoinColumn(name = "withWhom"))
     private List<UserModel> friends;
 
     public UserModel() {
