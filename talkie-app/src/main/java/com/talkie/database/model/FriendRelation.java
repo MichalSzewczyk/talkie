@@ -1,35 +1,27 @@
 package com.talkie.database.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 @Entity
+@IdClass(FriendRelationPK.class)
 @Table(name="friends")
 public class FriendRelation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "who")
-    private Integer who;
-    @Column(name = "with_whom")
-    private Integer with;
+    protected Integer who;
+    @Id
+    protected Integer withWhom;
 
-    private Boolean success;
+    private transient Boolean success;
 
-    public FriendRelation(Integer who, Integer with) {
+    public FriendRelation(Integer who, Integer withWhom) {
         this.who = who;
-        this.with = with;
+        this.withWhom = withWhom;
     }
 
     public FriendRelation() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getWho() {
@@ -40,12 +32,12 @@ public class FriendRelation {
         this.who = who;
     }
 
-    public Integer getWith() {
-        return with;
+    public Integer getWithWhom() {
+        return withWhom;
     }
 
-    public void setWith(Integer with) {
-        this.with = with;
+    public void setWithWhom(Integer withWhom) {
+        this.withWhom = withWhom;
     }
 
     public Boolean getSuccess() {
