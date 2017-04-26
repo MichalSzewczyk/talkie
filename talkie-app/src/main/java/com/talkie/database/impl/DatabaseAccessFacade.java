@@ -2,6 +2,7 @@ package com.talkie.database.impl;
 
 import com.talkie.database.interfaces.AccessService;
 import com.talkie.database.model.FriendRelation;
+import com.talkie.database.model.FriendRelationPK;
 import com.talkie.database.model.Message;
 import com.talkie.database.model.UserModel;
 import com.talkie.database.repositories.FriendsRepository;
@@ -112,8 +113,7 @@ public final class DatabaseAccessFacade implements AccessService {
     @Override
     public boolean removeFriends(String who, String with) {
         try {
-            FriendRelation relationToRemove = friendsRepository.findOneByWhoAndWith(Integer.valueOf(who), Integer.valueOf(with));
-            friendsRepository.delete(relationToRemove.getId());
+            friendsRepository.delete(new FriendRelationPK(Integer.valueOf(who), Integer.valueOf(with)));
         } catch (Throwable throwable) {
             logger.error(String.format(FRIEND_RELATION_ERROR, "deleting", who, with), throwable);
             return false;

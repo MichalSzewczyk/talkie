@@ -6,6 +6,14 @@ public class FriendRelationPK implements Serializable {
     private Integer who;
     private Integer withWhom;
 
+    public FriendRelationPK() {
+    }
+
+    public FriendRelationPK(Integer who, Integer withWhom) {
+        this.who = who;
+        this.withWhom = withWhom;
+    }
+
     public Integer getWho() {
         return who;
     }
