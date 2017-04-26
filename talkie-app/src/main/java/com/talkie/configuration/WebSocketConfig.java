@@ -10,8 +10,12 @@ import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
+    private final AbstractWebSocketHandler socketHandler;
+
     @Autowired
-    AbstractWebSocketHandler socketHandler;
+    public WebSocketConfig(AbstractWebSocketHandler socketHandler) {
+        this.socketHandler = socketHandler;
+    }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
