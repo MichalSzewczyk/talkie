@@ -47,5 +47,4 @@ public class FriendRelation {
     public void setSuccess(Boolean success) {
         this.success = success;
     }
-
 }
