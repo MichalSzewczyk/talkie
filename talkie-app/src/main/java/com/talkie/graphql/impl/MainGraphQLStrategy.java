@@ -26,6 +26,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
     private final List<GraphQLArgument> userArguments;
     private final List<GraphQLArgument> searchArguments;
     private final List<GraphQLArgument> makeFriendsArguments;
+    private final List<GraphQLArgument> getMyFriends;
     private final GraphQLObjectType personType;
 
 
@@ -36,6 +37,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
         this.userArguments = graphQLUtils.getArgumentList(GraphQLString, "id", "login", "name", "lastName", "password", "avatar", "friends", "success", "message");
         this.searchArguments = graphQLUtils.getArgumentList(GraphQLString, "letters", "length");
         this.makeFriendsArguments = graphQLUtils.getArgumentList(GraphQLString, "who", "with");
+        this.getMyFriends = graphQLUtils.getArgumentList(GraphQLString, "id");
         this.personType = getUserType();
 
     }
@@ -47,7 +49,7 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
 
     @Override
     public List<GraphQLFieldDefinition> getFields() {
-        return Arrays.asList(getLoginField(), getRegisterField(), getSearchField(), getMakeFriendsField(), getRemoveFriendsField());
+        return Arrays.asList(getLoginField(), getRegisterField(), getSearchField(), getMakeFriendsField(), getRemoveFriendsField(), getMyFriendsField());
     }
 
     private GraphQLFieldDefinition getRegisterField() {
@@ -116,6 +118,17 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                         )).build();
     }
 
+    private GraphQLFieldDefinition getMyFriendsField() {
+        return newFieldDefinition()
+                .name("myFriends")
+                .type(getMyFriendsType())
+                .argument(getMyFriends)
+                .dataFetcher(fetchingEnvironment -> databaseAccessFacade
+                        .getFriendsOfUser(
+                                fetchingEnvironment.getArgument("id")
+                        )).build();
+    }
+
     private GraphQLObjectType getFriendType() {
         return newObject()
                 .name("Friend")
@@ -163,6 +176,15 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
                 .field(graphQLUtils.getFieldDefinition("success", "Top length of users.", GraphQLBoolean))
                 .field(graphQLUtils.getFieldDefinition("who", "Id of the user establishing friend relation.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("with", "Id of user with whom user is establishing connection.", GraphQLString))
+                .build();
+    }
+
+    private GraphQLObjectType getMyFriendsType() {
+        return newObject()
+                .name("MyFriends")
+                .description("List of user's friends.")
+                .field(graphQLUtils.getFieldDefinition("id", "Id of requesting user.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("friends", "List of user's friends", new GraphQLList(getFriendType())))
                 .build();
     }
 }
