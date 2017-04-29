@@ -1,10 +1,7 @@
 package com.talkie.database.impl;
 
 import com.talkie.database.interfaces.AccessService;
-import com.talkie.database.model.FriendRelation;
-import com.talkie.database.model.FriendRelationPK;
-import com.talkie.database.model.Message;
-import com.talkie.database.model.UserModel;
+import com.talkie.database.model.*;
 import com.talkie.database.repositories.FriendsRepository;
 import com.talkie.database.repositories.MessageRepository;
 import com.talkie.database.repositories.UserRepository;
@@ -21,9 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public final class DatabaseAccessFacade implements AccessService {
     private static final String FRIEND_RELATION_ERROR = "Exception thrown while %s friend relation for friends: who: %s, with %s";
-    private final Logger logger = LoggerFactory.getLogger(DatabaseAccessFacade.class);
     private static final String USER_LOGGED_IN = "UserModel %s logged in with success.";
-
+    private final Logger logger = LoggerFactory.getLogger(DatabaseAccessFacade.class);
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
     private final FriendsRepository friendsRepository;
@@ -91,7 +87,7 @@ public final class DatabaseAccessFacade implements AccessService {
     }
 
     @Override
-    public SearchDTO searchUsers(String requestingId, String letters, String topNumber){
+    public SearchDTO searchUsers(String requestingId, String letters, String topNumber) {
         List<UserModel> users = userRepository.findUsersWithPartOfNameOrLastName(letters);
         return new SearchDTO(requestingId, letters, topNumber, users);
 
@@ -103,7 +99,7 @@ public final class DatabaseAccessFacade implements AccessService {
         try {
             friendsRepository.save(tmp);
             tmp.setSuccess(true);
-        }catch(Throwable throwable){
+        } catch (Throwable throwable) {
             logger.error(String.format(FRIEND_RELATION_ERROR, "creating", who, with), throwable);
             tmp.setSuccess(false);
         }
@@ -119,6 +115,12 @@ public final class DatabaseAccessFacade implements AccessService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public MyFriends getFriendsOfUser(String id) {
+        List<UserModel> friends = userRepository.findOne(Integer.valueOf(id)).getFriends();
+        return new MyFriends(id, friends);
     }
 
 }
