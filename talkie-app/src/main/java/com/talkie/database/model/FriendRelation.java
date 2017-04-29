@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @IdClass(FriendRelationPK.class)
-@Table(name="friends")
+@Table(name = "friends")
 public class FriendRelation {
     @Id
     protected Integer who;

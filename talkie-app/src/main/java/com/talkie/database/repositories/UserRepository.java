@@ -14,5 +14,4 @@ public interface UserRepository extends CrudRepository<UserModel, Integer> {
 
     @Query("SELECT u FROM UserModel u WHERE LOWER(u.name) LIKE CONCAT('%',:letters,'%') OR LOWER(u.lastName) LIKE CONCAT('%',:letters,'%')")
     List<UserModel> findUsersWithPartOfNameOrLastName(@Param("letters") String letters);
-    
 }
