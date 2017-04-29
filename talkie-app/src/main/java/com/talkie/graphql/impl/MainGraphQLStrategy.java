@@ -173,9 +173,9 @@ public final class MainGraphQLStrategy implements GraphQLStrategy {
         return newObject()
                 .name("FriendRelation")
                 .description("Result of establishing friend relation.")
-                .field(graphQLUtils.getFieldDefinition("success", "Top length of users.", GraphQLBoolean))
                 .field(graphQLUtils.getFieldDefinition("who", "Id of the user establishing friend relation.", GraphQLString))
                 .field(graphQLUtils.getFieldDefinition("with", "Id of user with whom user is establishing connection.", GraphQLString))
+                .field(graphQLUtils.getFieldDefinition("success", "Top length of users.", GraphQLString))
                 .build();
     }
 

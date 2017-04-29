@@ -1,9 +1,6 @@
 package com.talkie.database.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @IdClass(FriendRelationPK.class)
@@ -14,7 +11,8 @@ public class FriendRelation {
     @Id
     protected Integer withWhom;
 
-    private transient Boolean success;
+    @Transient
+    private Boolean success;
 
     public FriendRelation(Integer who, Integer withWhom) {
         this.who = who;

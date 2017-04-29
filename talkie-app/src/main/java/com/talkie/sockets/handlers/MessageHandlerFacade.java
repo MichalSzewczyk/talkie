@@ -62,7 +62,7 @@ public class MessageHandlerFacade extends TextWebSocketHandler {
         logger.info(String.format(HANDLING_MESSAGE, message.getPayload()));
 
         try {
-
+            handlingVisitor.handle(result);
         } catch (Exception e) {
             logger.error(String.format(MESSAGE_HANDLING_ERROR, result.getKey()), e);
         }
