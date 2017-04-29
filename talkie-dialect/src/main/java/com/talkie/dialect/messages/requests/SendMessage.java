@@ -7,6 +7,6 @@ import com.talkie.dialect.messages.TextMessage;
 import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"type","id", "payload"})
+@JsonPropertyOrder({"type", "id", "payload"})
 public class SendMessage extends TextMessage implements SocketRequestMessage, Serializable {
 }

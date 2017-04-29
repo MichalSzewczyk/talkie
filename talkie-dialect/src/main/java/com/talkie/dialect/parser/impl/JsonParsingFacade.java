@@ -9,14 +9,14 @@ import com.talkie.dialect.parser.interfaces.ParsingService;
 import com.talkie.dialect.utils.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
 
 public class JsonParsingFacade implements ParsingService {
-    private final Logger logger = LoggerFactory.getLogger(JsonParsingFacade.class);
     private final static String JSON_EXCEPTION = "Unable to %s object: %s";
-
+    private final Logger logger = LoggerFactory.getLogger(JsonParsingFacade.class);
     private final ObjectMapper objectMapper;
     private final CustomMatcher customMatcher;
 

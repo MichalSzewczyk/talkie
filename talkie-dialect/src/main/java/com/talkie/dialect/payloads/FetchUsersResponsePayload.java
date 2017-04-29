@@ -7,23 +7,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"payload"})
 public class FetchUsersResponsePayload {
-	public FetchUsersResponsePayload(UserElement[] users) {
-		this.users = users;
-	}
+    @JsonProperty("users")
+    private UserElement[] users;
 
-	public FetchUsersResponsePayload() {}
+    public FetchUsersResponsePayload(UserElement[] users) {
+        this.users = users;
+    }
 
-	@JsonProperty("users")
-	private UserElement[] users;
+    public FetchUsersResponsePayload() {
+    }
 
-	@JsonProperty("users")
- 	public void setUsers(UserElement[] users) {
-		this.users = users;
-	}
+    @JsonProperty("users")
+    public UserElement[] getUsers() {
+        return users;
+    }
 
-	@JsonProperty("users")
-	public UserElement[] getUsers() {
-		return users;
-	}
+    @JsonProperty("users")
+    public void setUsers(UserElement[] users) {
+        this.users = users;
+    }
 
 }

@@ -1,32 +1,32 @@
 package com.talkie.dialect.payloads;
 
 public class UserElement {
-	private Integer id;
-	private String status;
+    private Integer id;
+    private String status;
 
-	public UserElement(Integer id, String status) {
-		this.id = id;
-		this.status = status;
-	}
+    public UserElement(Integer id, String status) {
+        this.id = id;
+        this.status = status;
+    }
 
-	public UserElement() {
-	}
+    public UserElement() {
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
- 	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 
 }

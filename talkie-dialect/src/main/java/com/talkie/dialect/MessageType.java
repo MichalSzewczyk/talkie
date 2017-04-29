@@ -1,7 +1,9 @@
 package com.talkie.dialect;
 
 import com.talkie.dialect.messages.SocketMessage;
-import com.talkie.dialect.messages.requests.*;
+import com.talkie.dialect.messages.requests.FetchUserStatus;
+import com.talkie.dialect.messages.requests.FindUser;
+import com.talkie.dialect.messages.requests.SendMessage;
 import com.talkie.dialect.messages.responses.FetchUsersStatusResponse;
 import com.talkie.dialect.messages.responses.FindUserResponse;
 import com.talkie.dialect.messages.responses.ReceiveMessage;

@@ -11,17 +11,15 @@ import java.util.List;
 @JsonPropertyOrder({"type", "payload"})
 public class FetchUserStatusResponse implements SocketResponseMessage {
 
-    public FetchUserStatusResponse(List<Integer> ids) {
-        payload = new FetchUserResponsePayload(ids);
-    }
-
     @JsonProperty("type")
     private String type;
-
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("payload")
     private FetchUserResponsePayload payload;
+    public FetchUserStatusResponse(List<Integer> ids) {
+        payload = new FetchUserResponsePayload(ids);
+    }
 
     @JsonProperty("type")
     public String getType() {

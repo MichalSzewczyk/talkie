@@ -12,6 +12,13 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"type", "id", "payload"})
 public class TextMessage implements SocketMessage, Serializable {
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("payload")
+    private SendMessagePayload payload;
+    @JsonProperty("id")
+    private Integer id;
+
     public TextMessage() {
     }
 
@@ -20,15 +27,6 @@ public class TextMessage implements SocketMessage, Serializable {
         this.id = sendMessage.getId();
         this.type = messageType.toString();
     }
-
-    @JsonProperty("type")
-    private String type;
-
-    @JsonProperty("payload")
-    private SendMessagePayload payload;
-
-    @JsonProperty("id")
-    private Integer id;
 
     @JsonProperty("type")
     public String getType() {

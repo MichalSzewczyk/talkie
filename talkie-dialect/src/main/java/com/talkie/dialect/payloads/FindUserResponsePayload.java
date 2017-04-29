@@ -10,11 +10,12 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"listOfUsers"})
 public class FindUserResponsePayload {
-    public FindUserResponsePayload(List<User> listOfUsers){
-        this.listOfUsers = listOfUsers;
-    }
     @JsonProperty("listOfUsers")
     private List<User> listOfUsers;
+
+    public FindUserResponsePayload(List<User> listOfUsers) {
+        this.listOfUsers = listOfUsers;
+    }
 
     @JsonProperty("listOfUsers")
     public List<User> getListOfUsers() {

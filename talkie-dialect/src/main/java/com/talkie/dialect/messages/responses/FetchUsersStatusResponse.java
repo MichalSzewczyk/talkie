@@ -11,18 +11,18 @@ import java.io.Serializable;
 @JsonPropertyOrder({"type", "payload"})
 public class FetchUsersStatusResponse implements SocketResponseMessage, Serializable {
 
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("payload")
+    private FetchUsersResponsePayload payload;
+
     public FetchUsersStatusResponse(String type, FetchUsersResponsePayload payload) {
         this.type = type;
         this.payload = payload;
     }
 
-    public FetchUsersStatusResponse() {}
-
-    @JsonProperty("type")
-    private String type;
-
-    @JsonProperty("payload")
-    private FetchUsersResponsePayload payload;
+    public FetchUsersStatusResponse() {
+    }
 
     @JsonProperty("type")
     public String getType() {

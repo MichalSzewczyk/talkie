@@ -1,6 +1,6 @@
 package com.talkie.dialect.utils;
 
-public final class Tuple <K, V>{
+public final class Tuple<K, V> {
     private final K key;
     private final V value;
 

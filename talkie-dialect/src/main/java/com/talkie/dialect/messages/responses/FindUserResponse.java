@@ -14,19 +14,17 @@ import java.util.List;
 @JsonPropertyOrder({"type", "payload"})
 public class FindUserResponse implements SocketResponseMessage, Serializable {
 
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("id")
+    private Integer id;
+    @JsonProperty("payload")
+    private FindUserResponsePayload payload;
     public FindUserResponse(Integer id, List<User> users) {
         this.payload = new FindUserResponsePayload(users);
         this.id = id;
         this.type = MessageType.FIND_USER_RESPONSE.toString();
     }
-
-    @JsonProperty("type")
-    private String type;
-
-    @JsonProperty("id")
-    private Integer id;
-    @JsonProperty("payload")
-    private FindUserResponsePayload payload;
 
     @JsonProperty("type")
     public String getType() {
