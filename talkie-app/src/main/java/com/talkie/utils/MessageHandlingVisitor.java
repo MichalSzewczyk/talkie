@@ -28,6 +28,6 @@ public class MessageHandlingVisitor extends HandlingVisitor {
 
     @Override
     public void visit(FindUser findUser) {
-        handlingService.handleFindUser(findUser , session);
+        handlingService.handleFindUser(findUser, session);
     }
 }

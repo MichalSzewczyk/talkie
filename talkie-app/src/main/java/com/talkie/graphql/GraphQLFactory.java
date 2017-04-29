@@ -14,10 +14,9 @@ import static graphql.schema.GraphQLObjectType.newObject;
 
 @Service
 public final class GraphQLFactory {
-    private final Logger logger = LoggerFactory.getLogger(GraphQLFactory.class);
-
-    private final GraphQLStrategy graphQLStrategy;
     private static final String GRAPH_QL_CREATION_INFO = "Creating GraphQL bean for strategy: %s";
+    private final Logger logger = LoggerFactory.getLogger(GraphQLFactory.class);
+    private final GraphQLStrategy graphQLStrategy;
 
     @Autowired
     public GraphQLFactory(GraphQLStrategy graphQLStrategy) {

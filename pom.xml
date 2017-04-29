@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.talkie.project</groupId>
-	<artifactId>talkie</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<modules>
-		<module>talkie-dialect</module>
-		<module>talkie-app</module>
-	</modules>
-	<packaging>pom</packaging>
+    <groupId>com.talkie.project</groupId>
+    <artifactId>talkie</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>talkie-dialect</module>
+        <module>talkie-app</module>
+    </modules>
+    <packaging>pom</packaging>
 
-	<name>talkie</name>
-	<description>Messaging app</description>
+    <name>talkie</name>
+    <description>Messaging app</description>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.1.RELEASE</version>
-		<relativePath/>
-	</parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.1.RELEASE</version>
+        <relativePath/>
+    </parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
 
-	<profiles>
-		<profile>
+    <profiles>
+        <profile>
             <id>development</id>
             <properties>
                 <springActiveProfile>dev</springActiveProfile>
@@ -44,9 +44,9 @@
                 <springProfile>prod</springProfile>
             </properties>
         </profile>
-	</profiles>
-	<build>
-		<plugins>
+    </profiles>
+    <build>
+        <plugins>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -59,7 +59,7 @@
                     </includes>
                 </configuration>
             </plugin>
-		</plugins>
+        </plugins>
 
-	</build>
+    </build>
 </project>

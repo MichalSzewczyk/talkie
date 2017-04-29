@@ -8,8 +8,11 @@ import org.springframework.web.socket.WebSocketSession;
 
 public abstract class HandlingVisitor {
     protected WebSocketSession session;
+
     public abstract void visit(FetchUserStatus fetchUserStatus);
+
     public abstract void visit(SendMessage fetchUserStatus);
+
     public abstract void visit(FindUser findUser);
 
     public void setSession(WebSocketSession session) {

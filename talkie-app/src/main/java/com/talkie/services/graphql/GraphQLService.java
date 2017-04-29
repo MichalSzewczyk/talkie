@@ -13,16 +13,17 @@ import org.springframework.stereotype.Service;
 @Lazy
 @Service
 public class GraphQLService implements WebService {
+    private static final String CREATION_MESSAGE = "Creating bean: %s";
     private final GraphQL graphQL;
     private final Logger logger = LoggerFactory.getLogger(GraphQLService.class);
-    private static final String CREATION_MESSAGE = "Creating bean: %s";
+
     @Autowired
     public GraphQLService(GraphQL graphQL) {
         logger.info(String.format(CREATION_MESSAGE, GraphQLService.class.getName()));
         this.graphQL = graphQL;
     }
 
-    public WebExecutionResult execute(String requestBody){
+    public WebExecutionResult execute(String requestBody) {
         return new GraphQLResultAdapter(graphQL.execute(requestBody));
     }
 }

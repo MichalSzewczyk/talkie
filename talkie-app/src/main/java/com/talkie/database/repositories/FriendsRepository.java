@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FriendsRepository extends CrudRepository<FriendRelation, FriendRelationPK> {
     FriendRelation findOneByWhoAndWithWhom(Integer who, Integer withWhom);
+
 }

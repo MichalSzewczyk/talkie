@@ -6,8 +6,8 @@ import com.talkie.dialect.messages.requests.FetchUserStatus;
 import com.talkie.dialect.messages.requests.FindUser;
 import com.talkie.dialect.messages.requests.SendMessage;
 import com.talkie.dialect.parser.interfaces.ParsingService;
-import com.talkie.utils.HandlingVisitor;
 import com.talkie.dialect.utils.Tuple;
+import com.talkie.utils.HandlingVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class MessageHandlerFacade extends TextWebSocketHandler {
     private static final String SESSION_CLOSED_INFO = "Session %s closed due to reason: %s";
-    private final Logger logger = LoggerFactory.getLogger(MessageHandlerFacade.class);
-
-    private final List<WebSocketSession> establishedSessions;
-
     private static final String NOT_SUPPORTED_MESSAGE = "Not supported message type: %s";
     private static final String ESTABLISHED_CONNECTION = "Established connection with user: %s";
     private static final String HANDLING_MESSAGE = "Handling socket message: %s";
     private static final String MESSAGE_HANDLING_ERROR = "Error occurred while handling message: %s";
-
+    private final Logger logger = LoggerFactory.getLogger(MessageHandlerFacade.class);
+    private final List<WebSocketSession> establishedSessions;
     private final HandlingVisitor handlingVisitor;
     private final AbstractHandlingService handlingService;
     private final ParsingService parsingService;

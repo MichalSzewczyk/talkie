@@ -29,8 +29,6 @@ import java.util.Set;
 
 @Service
 public class HandlingServiceImpl extends AbstractHandlingService {
-    private final Logger logger = LoggerFactory.getLogger(HandlingServiceImpl.class);
-
     private static final String SESSION_INFO = "Got session %s for id %s from id logged in users: %s";
     private static final String RECEIVER_NOT_FOUND = "Message receiver: %s not found. Required session is not available or user is not logged in.";
     private static final String LOGGED_IN_USERS = "Users logged in: %s when user %s is fetching users.";
@@ -39,7 +37,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     private static final String SENDING_MESSAGE = "Sending message: %s to user %s with timestamp %s";
     private static final String DISCONNECT_INFO = "Disconnecting user with id: %s";
     private static final String NOTIFYING_FRIENDS = "Notifying friends of user: %s";
-
+    private final Logger logger = LoggerFactory.getLogger(HandlingServiceImpl.class);
     private final ParsingService parsingService;
     private final AccessService accessService;
 
@@ -78,7 +76,7 @@ public class HandlingServiceImpl extends AbstractHandlingService {
     @Override
     public void handleDisconnect(WebSocketSession session) {
         Integer id = biDirectionalIdAndSessionMapping.inverse().get(session);
-        if(!(id == null)) {
+        if (!(id == null)) {
             accessService.logoutUser(id);
             removeFromCache(session);
             handleNotifyAboutChangingStatusOfUser(id);

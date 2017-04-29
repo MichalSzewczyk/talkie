@@ -1,6 +1,9 @@
 package com.talkie.utils;
 
-import graphql.schema.*;
+import graphql.schema.GraphQLArgument;
+import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLOutputType;
+import graphql.schema.GraphQLScalarType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

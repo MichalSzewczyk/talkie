@@ -1,6 +1,5 @@
 package com.talkie.controllers;
 
-import com.talkie.database.repositories.UserRepository;
 import com.talkie.interfaces.WebExecutionResult;
 import com.talkie.interfaces.WebService;
 import org.slf4j.Logger;
@@ -12,11 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class TalkieController {
-    private final Logger logger = LoggerFactory.getLogger(TalkieController.class);
-
     private static final String REQUEST_INFO = "Request with parameter: %s";
     private static final String GRAPH_QL_ERROR = "Error: %s, while executing graphQl query for request body: %s";
     private static final String GRAPH_QL_RESULT = "Result of request: %s";
+    private final Logger logger = LoggerFactory.getLogger(TalkieController.class);
     private final WebService webService;
 
     @Autowired
