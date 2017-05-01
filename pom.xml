@@ -64,11 +64,11 @@
                 <version>0.4.11</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <dockerDirectory>/</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/talkie-app</targetPath>
-                            <directory>${project.build.directory}</directory>
+                            <directory>${project.build.directory}/../talkie-app/target</directory>
                             <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
