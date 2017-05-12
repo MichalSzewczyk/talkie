@@ -75,4 +75,7 @@
             <version>0.0.1</version>
         </dependency>
     </dependencies>
+    <properties>
+        <start-class>com.talkie.TalkieApplication</start-class>
+    </properties>
 </project>
