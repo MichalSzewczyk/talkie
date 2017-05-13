@@ -63,7 +63,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.11</version>
                 <configuration>
-                    <imageName>img/talkie</imageName>
+                    <imageName>talkie</imageName>
                     <dockerDirectory>${project.basedir}</dockerDirectory>
                     <resources>
                         <resource>
